@@ -60,6 +60,17 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className={`${sansKr.variable} ${display.variable} ${mono.variable} h-full`}
     >
+      <head>
+        {/*
+          Pretendard는 빌드 때 받지 않고 브라우저가 받는다.
+          next/font로 묶으면 빌드가 네트워크를 타야 해서, 오프라인 빌드에서 깨진다.
+        */}
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" crossOrigin="" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
+        />
+      </head>
       <body className="grain min-h-full">
         {/* 스크롤 연출을 켜는 표시. 이 스크립트가 안 돌면 CSS가 아무것도 감추지 않는다. */}
         <script dangerouslySetInnerHTML={{ __html: 'document.documentElement.dataset.js=""' }} />

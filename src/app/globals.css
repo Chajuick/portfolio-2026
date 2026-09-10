@@ -49,13 +49,15 @@
 }
 
 /*
- * 터미널. 테마와 무관하게 늘 어둡다 — 화면이 켜지는 연출이므로.
+ * 어두운 면. 터미널과 히어로 무대가 함께 쓴다.
+ * 테마와 무관하게 늘 어둡다 — 제품 화면은 어두운 바닥 위에서 가장 잘 보인다.
  *
  * 다크 토큰을 그대로 쓰면 안 된다. 다크 테마의 흐린 회색은 #0c0c0b 배경 위에서
  * 읽히라고 만든 값이 아니라 문서 배경(#0c0c0b)과 거의 붙는다.
  * 여기서는 배경을 조금 들어올리고 회색을 밝혀 대비를 따로 잡는다.
  */
-.terminal {
+.terminal,
+.stage {
   --bg: #101010;
   --bg-raised: #1c1c1a;
   --bg-sunken: #0a0a09;
@@ -104,7 +106,7 @@ html {
 body {
   background: var(--bg);
   color: var(--fg);
-  font-family: var(--font-sans-kr), system-ui, sans-serif;
+  font-family: "Pretendard Variable", Pretendard, var(--font-sans-kr), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-wrap: pretty;
   /* 한글은 어절 안에서 끊으면 안 읽힌다. 긴 라틴 단어만 예외로 쪼갠다. */
@@ -146,9 +148,9 @@ body {
  * 그래서 기본형은 700에 자간을 거의 주지 않는다.
  */
 @utility display {
-  font-family: var(--font-display), var(--font-sans-kr), sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.012em;
+  font-family: "Pretendard Variable", Pretendard, var(--font-sans-kr), sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.028em;
   line-height: 1.02;
   text-wrap: balance;
 }
@@ -167,7 +169,7 @@ body {
  * 한글에 넓은 자간을 주면 글자가 낱개로 흩어져 보인다 — 섞어 쓰지 말 것.
  */
 @utility label {
-  font-family: var(--font-sans-kr), system-ui, sans-serif;
+  font-family: "Pretendard Variable", Pretendard, var(--font-sans-kr), system-ui, sans-serif;
   font-size: 0.75rem;
   line-height: 1.4;
   letter-spacing: 0.01em;
@@ -226,6 +228,35 @@ body {
     opacity: 1;
     transform: none;
   }
+}
+
+/* 쇼릴 캡션. 이미지 페이드와 같은 길이로 함께 바뀐다. */
+@media (prefers-reduced-motion: no-preference) {
+  .caption-swap {
+    animation: caption-swap 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes caption-swap {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 무대 바닥. 평평한 검정은 싸 보인다 — 빛을 한 번 돌린다. */
+.stage-glow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 78% 18%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 62%),
+    radial-gradient(90% 70% at 10% 0%, color-mix(in srgb, var(--fg) 8%, transparent), transparent 58%);
 }
 
 /* ──────────────────────────────────────────────────────────────
