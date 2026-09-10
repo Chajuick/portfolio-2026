@@ -8,9 +8,9 @@ export const profile = {
     "편안하게 사용할 수 있고, 필요할 때 도움이 되는 소프트웨어를 지향합니다.",
   ],
   meta: [
-    { label: "지금", value: "B2B SaaS 프론트엔드 전담" },
-    { label: "도메인", value: "제조 · 회계 · 문서관리" },
-    { label: "주로 쓰는 것", value: "React · TypeScript · Next.js" },
+    { label: "하는 일", value: "사용자와 가장 가까운 화면을 만듭니다" },
+    { label: "익숙한 업무", value: "제조 · 회계 · 문서관리" },
+    { label: "주로 사용하는 기술", value: "React · TypeScript · Next.js" },
   ],
   bio: [
     "B2B 제조·회계·문서관리 SaaS의 프론트엔드를 맡고 있습니다. 네 곳의 고객사 시스템과 한 곳의 회계 제품이 제가 짠 화면 위에서 돌아갑니다.",
@@ -24,8 +24,8 @@ export const profile = {
 export const sectionCopy = {
   work: {
     label: "Work",
-    title: "현장에서 돌아가는 제품",
-    lead: "고객사 이름과 인프라 정보는 뺐습니다. 무엇이 문제였고 왜 그렇게 판단했는지만 남겼습니다.",
+    title: "맡아서 만든 제품",
+    lead: "고객사 정보는 빼고, 무엇이 문제였고 어떻게 풀었는지만 남겼습니다.",
   },
   lab: {
     label: "Lab",

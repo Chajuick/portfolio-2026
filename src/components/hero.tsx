@@ -44,7 +44,7 @@ export function Hero() {
                 key={m.label}
                 className="flex items-baseline gap-6 border-b border-line py-2.5"
               >
-                <dt className="label w-24 shrink-0 text-fg-faint">{m.label}</dt>
+                <dt className="label w-32 shrink-0 text-fg-faint">{m.label}</dt>
                 <dd className="text-sm text-fg-muted">{m.value}</dd>
               </div>
             ))}
@@ -73,11 +73,11 @@ export function Hero() {
           </div>
         </div>
 
-        <div
-          className="enter w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[320px] lg:justify-self-end"
-          style={delay(0.44)}
-        >
-          <Mascot />
+        {/* 반대 테마 색으로 세운 아치. 비어 있던 오른쪽에 무게를 준다. */}
+        <div className="enter flex justify-center lg:justify-end" style={delay(0.44)}>
+          <div className="surface-invert flex w-full max-w-[260px] justify-center rounded-t-full bg-bg px-9 pt-20 pb-12 sm:max-w-[300px] lg:max-w-[420px] lg:pt-28 lg:pb-20">
+            <Mascot />
+          </div>
         </div>
       </div>
     </section>
