@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { ArrowUpRight, Lock } from "lucide-react";
+import { ProjectMark } from "@/components/project-mark";
 import type { Project } from "@/lib/data";
 
 /**
  * 실무 항목. 카드 대신 한 행으로 편다.
- * 세 개뿐이라 카드로 나열하면 정보보다 테두리가 먼저 보인다.
+ * 왼쪽에는 그 제품의 구조를 그린 도형을 세운다 —
+ * 세 제품이 글자만으로는 서로 구분되지 않아서 형태로 구분되게 했다.
  */
 export function ProjectRow({ project, index }: { project: Project; index: number }) {
   const detail = Boolean(project.problem || project.decisions?.length);
@@ -21,10 +23,13 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         className="pointer-events-none absolute -inset-x-5 -inset-y-1 -z-10 rounded-xl bg-bg-raised opacity-0 transition-opacity duration-500 group-hover:opacity-100"
       />
 
-      <div className="grid gap-5 sm:grid-cols-[2.5rem_1fr] sm:gap-8">
-        <span className="label-en pt-1.5 text-fg-faint transition-colors duration-500 group-hover:text-accent">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+      <div className="grid gap-6 sm:grid-cols-[7rem_1fr] sm:gap-9">
+        <div>
+          <span className="label-en text-fg-faint transition-colors duration-500 group-hover:text-accent">
+            {String(index + 1).padStart(2, "0")}
+          </span>
+          <ProjectMark slug={project.slug} index={index} className="mt-4 w-full max-w-28" />
+        </div>
 
         <div>
           <div className="flex items-start justify-between gap-6">

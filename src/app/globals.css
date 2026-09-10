@@ -22,6 +22,7 @@
   --line-soft: #e8e5dd;
   --line-strong: #14130f;
   --accent: #c9451a;
+  --accent-soft: #f0d9cf;
   --accent-fg: #ffffff;
   --screen: #ffffff;
   --screen-ink: #14130f;
@@ -29,7 +30,8 @@
 }
 
 .dark,
-:root:not(.dark) .surface-invert {
+:root:not(.dark) .surface-invert,
+.terminal {
   --bg: #0c0c0b;
   --bg-raised: #141413;
   --bg-sunken: #070706;
@@ -40,6 +42,7 @@
   --line-soft: #1c1b19;
   --line-strong: #f3f1ea;
   --accent: #ff5f2e;
+  --accent-soft: #3a2118;
   --accent-fg: #0c0c0b;
   --screen: #1b1b19;
   --screen-ink: #f3f1ea;
@@ -57,6 +60,7 @@
   --color-line-soft: var(--line-soft);
   --color-line-strong: var(--line-strong);
   --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-accent-fg: var(--accent-fg);
   --font-sans: var(--font-sans-kr);
   --font-display: var(--font-display);
@@ -198,6 +202,88 @@ body {
     opacity: 1;
     transform: none;
   }
+}
+
+/* ──────────────────────────────────────────────────────────────
+   부팅 연출.
+   덧씌우는 층일 뿐이라 이 아래 페이지는 처음부터 다 그려져 있다.
+   스크립트가 죽으면 연출만 사라지고 내용은 남는다.
+   ────────────────────────────────────────────────────────────── */
+@keyframes boot-power {
+  0% {
+    transform: scaleY(0.003) scaleX(0.7);
+    opacity: 0;
+  }
+  10% {
+    transform: scaleY(0.003) scaleX(1);
+    opacity: 1;
+  }
+  32% {
+    transform: scaleY(1) scaleX(1);
+  }
+  40% {
+    transform: scaleY(1.015) scaleX(1);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes boot-off {
+  0% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scaleY(0.004) scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.004) scaleX(0.15);
+    opacity: 0;
+  }
+}
+
+@keyframes caret {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  50%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.boot-screen {
+  animation: boot-power 620ms cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+.boot-screen[data-off="true"] {
+  animation: boot-off 460ms cubic-bezier(0.6, 0, 0.9, 0.2) both;
+}
+
+.caret {
+  animation: caret 1.05s steps(1, end) infinite;
+}
+
+/* 주사선. 화면이라는 걸 알려주는 최소한의 질감. */
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(0 0 0 / 0.28) 0px,
+    rgb(0 0 0 / 0.28) 1px,
+    transparent 1px,
+    transparent 3px
+  );
 }
 
 /* 스크롤 진행 막대. 스크롤 기반 애니메이션이 있는 브라우저에서만 그린다. */

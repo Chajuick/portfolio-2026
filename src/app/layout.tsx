@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR, Archivo, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { BootIntro } from "@/components/boot-intro";
+import { Dock } from "@/components/dock";
 import { profile } from "@/lib/data";
 import { siteUrl } from "@/lib/site";
 import "./globals.css";
@@ -61,7 +63,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="grain min-h-full">
         {/* 스크롤 연출을 켜는 표시. 이 스크립트가 안 돌면 CSS가 아무것도 감추지 않는다. */}
         <script dangerouslySetInnerHTML={{ __html: 'document.documentElement.dataset.js=""' }} />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          {children}
+          {/* 연출과 도크는 본문 위에 얹히는 층이다. 내용을 가리지 않는다. */}
+          <BootIntro />
+          <Dock />
+        </ThemeProvider>
       </body>
     </html>
   );
