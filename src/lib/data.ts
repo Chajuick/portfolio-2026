@@ -3,6 +3,8 @@ export const profile = {
   handle: "Chajuick",
   role: "프론트엔드 엔지니어",
   tagline: "일상과 업무에 녹아드는 화면을 만듭니다.",
+  /** tagline 안에서 색을 입힐 한 마디. 한 화면에 강조는 하나면 충분하다. */
+  taglineAccent: "녹아드는",
   intro: [
     "매일 곁에 두고 싶은 프로그램을 만듭니다.",
     "편안하게 사용할 수 있고, 필요할 때 도움이 되는 소프트웨어를 지향합니다.",
@@ -118,6 +120,15 @@ export const projects: Project[] = [
     ],
     stack: ["React", "Vite", "Express", "MariaDB", "멀티테넌트"],
     private: "사내 제품이라 저장소는 비공개입니다.",
+    shots: [
+      {
+        src: "/shots/donidora-dashboard.png",
+        alt: "도니도라 경영 대시보드",
+        device: "desktop",
+        caption: "경영 대시보드 — 고객사명은 가렸습니다",
+      },
+      { src: "/shots/donidora-home.png", alt: "도니도라 홈 화면", device: "desktop" },
+    ],
   },
   {
     slug: "focuswin-mes",
@@ -151,6 +162,15 @@ export const projects: Project[] = [
     ],
     stack: ["React", "TypeScript", "제조 도메인"],
     private: "고객사 시스템이라 저장소와 사명은 공개하지 않습니다.",
+    shots: [
+      {
+        src: "/shots/focuswin-mes-orders.png",
+        alt: "작업지시 목록",
+        device: "desktop",
+        caption: "작업지시 — 진행률과 지연을 한 줄에서 읽는다",
+      },
+      { src: "/shots/focuswin-mes-home.png", alt: "업무 현황 화면", device: "desktop" },
+    ],
   },
   {
     slug: "doc-saas",
@@ -238,7 +258,19 @@ export const projects: Project[] = [
       { label: "SQL 실행", value: "브라우저 인메모리" },
     ],
     stack: ["React 19", "Tailwind v4", "Zustand", "AlaSQL", "Gemini", "Wouter"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/Crystal-Lab" }],
+    links: [
+      { label: "사이트", href: "https://crystal-lab-lake.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/Crystal-Lab" },
+    ],
+    shots: [
+      {
+        src: "/shots/retention-lab-data.png",
+        alt: "브라우저 안에서 도는 가상 웨어하우스",
+        device: "desktop",
+        caption: "서버 없이 브라우저에서 SQL이 실행된다",
+      },
+      { src: "/shots/retention-lab-home.png", alt: "학습 허브 화면", device: "desktop" },
+    ],
   },
   {
     slug: "bizai",
@@ -265,6 +297,71 @@ export const projects: Project[] = [
     links: [{ label: "GitHub", href: "https://github.com/Chajuick/bizai" }],
   },
   {
+    slug: "golabon",
+    title: "골라본",
+    subtitle: "직접 써보고 가본 것만 추천",
+    year: "2026",
+    kind: "lab",
+    featured: true,
+    role: "기획 · 설계 · 개발 전부",
+    summary:
+      "생활용품부터 맛집·카페·숙소까지, 직접 돈 내고 써보고 가본 것만 골라 검증 기준과 함께 공개하는 큐레이션. 탈락한 것도 이유와 함께 남깁니다.",
+    problem:
+      "추천 콘텐츠는 대부분 협찬입니다. 그런데 협찬 여부가 표시되더라도 소용이 없습니다 — 좋은 말만 남고 나쁜 말은 애초에 올라오지 않기 때문입니다. 읽는 사람은 무엇이 걸러졌는지 알 수 없습니다.",
+    decisions: [
+      {
+        title: "탈락한 것을 먼저 보여줬다",
+        body:
+          "추천만 모아두면 협찬 목록과 구분되지 않습니다. 그래서 비추천·탈락 항목을 같은 무게로 노출하고, 첫 화면에서 바로 들어갈 수 있게 했습니다. 안 좋았던 것을 말할 수 있어야 좋았다는 말이 믿깁니다.",
+      },
+      {
+        title: "검증 기준을 화면에 박았다",
+        body:
+          "직접 방문 횟수, 재방문 의향, 가격대를 항목으로 고정했습니다. 글로 풀어 쓰면 항목을 빠뜨려도 티가 나지 않지만, 칸으로 만들면 비어 있는 것이 보입니다.",
+      },
+    ],
+    outcome: "추천과 탈락이 같은 화면에 있고, 무엇을 보고 판단했는지가 항목으로 남습니다.",
+    stack: ["Next.js", "React", "TypeScript"],
+    links: [{ label: "사이트", href: "https://golabon.vercel.app/" }],
+    shots: [
+      {
+        src: "/shots/golabon.png",
+        alt: "검증된 추천과 탈락템을 나란히 둔 첫 화면",
+        device: "desktop",
+        caption: "추천 옆에 탈락을 같은 크기로 둔다",
+      },
+    ],
+  },
+  {
+    slug: "jeok-balim",
+    title: "적바림",
+    subtitle: "짧은 글을 쌓는 기록장",
+    year: "2026",
+    kind: "lab",
+    role: "기획 · 설계 · 개발 전부",
+    summary:
+      "그때그때 적어둔 짧은 글을 태그와 함께 쌓아두는 기록장. 세리프 타이포와 여백만으로 화면을 만들어, 읽는 것 말고는 아무것도 방해하지 않게 했습니다.",
+    problem:
+      "메모 앱은 기능이 많을수록 안 쓰게 됩니다. 폴더를 정하고 태그를 달고 서식을 고르는 사이에 적으려던 것을 잊습니다.",
+    decisions: [
+      {
+        title: "화면에서 뺄 수 있는 것을 전부 뺐다",
+        body:
+          "목록은 제목과 연도, 태그 하나뿐입니다. 버튼도 사이드바도 두지 않았습니다. 글이 화면에서 가장 큰 요소가 되도록 크기를 잡았습니다.",
+      },
+    ],
+    stack: ["Next.js", "React", "타이포그래피"],
+    links: [{ label: "사이트", href: "https://jeok-balim.vercel.app/" }],
+    shots: [
+      {
+        src: "/shots/jeok-balim.png",
+        alt: "제목만 크게 세운 글 목록",
+        device: "desktop",
+        caption: "글이 화면에서 가장 큰 요소다",
+      },
+    ],
+  },
+  {
     slug: "geurimgyeol",
     title: "그림결",
     subtitle: "창작자용 세계관 설정 관리",
@@ -284,7 +381,18 @@ export const projects: Project[] = [
     ],
     metrics: [{ label: "커밋", value: "40" }],
     stack: ["React", "TypeScript", "Express", "shadcn/ui", "Wouter", "모노레포"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/geurimgyeol" }],
+    links: [
+      { label: "사이트", href: "https://geurimgyeol.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/geurimgyeol" },
+    ],
+    shots: [
+      {
+        src: "/shots/geurimgyeol.png",
+        alt: "등장인물 목록과 소속·특성 필터",
+        device: "desktop",
+        caption: "인물을 문서가 아니라 관계를 가진 객체로 다룬다",
+      },
+    ],
   },
   {
     slug: "mindfulness",
@@ -306,11 +414,22 @@ export const projects: Project[] = [
     ],
     metrics: [{ label: "커밋", value: "13" }],
     stack: ["Next.js", "React", "Motion"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/mindfulness" }],
+    links: [
+      { label: "사이트", href: "https://mindfulness-sigma-lemon.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/mindfulness" },
+    ],
+    shots: [
+      {
+        src: "/shots/mindfulness.png",
+        alt: "단어별로 꽂힌 책들",
+        device: "desktop",
+        caption: "한 권이 한 단어. 날짜가 아니라 주제로 묶인다",
+      },
+    ],
   },
   {
-    slug: "our-date",
-    title: "우리 데이트",
+    slug: "durinuri",
+    title: "두리누리",
     subtitle: "둘이 쓰는 데이트 기록",
     year: "2026",
     kind: "lab",
@@ -328,7 +447,18 @@ export const projects: Project[] = [
     ],
     metrics: [{ label: "커밋", value: "19" }],
     stack: ["Next.js", "React", "TypeScript"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/durinuri" }],
+    links: [
+      { label: "사이트", href: "https://durinuri.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/durinuri" },
+    ],
+    shots: [
+      {
+        src: "/shots/durinuri.png",
+        alt: "공유 비밀번호 하나로 들어가는 로그인 화면",
+        device: "desktop",
+        caption: "가입이 없다. 둘이 아는 비밀번호 하나로 들어간다",
+      },
+    ],
   },
   {
     slug: "yeonkku",
@@ -349,7 +479,18 @@ export const projects: Project[] = [
       },
     ],
     stack: ["React", "TypeScript", "Vite", "로컬 전용"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/yeonkku" }],
+    links: [
+      { label: "사이트", href: "https://yeonkku.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/yeonkku" },
+    ],
+    shots: [
+      {
+        src: "/shots/yeonkku.png",
+        alt: "제각각인 연락처 이름을 한 형식으로 정리하는 화면",
+        device: "desktop",
+        caption: "파일이 브라우저 밖으로 나가지 않는다",
+      },
+    ],
   },
   {
     slug: "reserve-completed",
@@ -361,13 +502,24 @@ export const projects: Project[] = [
     summary: "훈련 통지를 받은 뒤 훈련일까지 챙겨야 할 것들을 빠뜨리지 않게 해주는 도구.",
     problem: "일 년에 한 번뿐이라 매번 뭘 챙겨야 하는지 까먹습니다.",
     stack: ["Next.js", "React", "TypeScript"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/reserve-completed" }],
+    links: [
+      { label: "사이트", href: "https://reserve-completed.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/reserve-completed" },
+    ],
+    shots: [
+      {
+        src: "/shots/reserve-completed-mobile.png",
+        alt: "훈련일까지 남은 날과 준비도",
+        device: "mobile",
+        caption: "훈련 통지를 받은 날부터 당일까지",
+      },
+    ],
   },
 
   // ─────────────────────────────── 실험 ───────────────────────────────
   {
-    slug: "poke-dex",
-    title: "띠부띠부씰 도감",
+    slug: "ttibook",
+    title: "띠북",
     subtitle: "레트로 도감 UI 실험",
     year: "2026",
     kind: "craft",
@@ -375,7 +527,18 @@ export const projects: Project[] = [
     summary:
       "관동 1~100번 띠부띠부씰 컬렉션 트래커. 빨간 포켓몬 도감을 화면으로 옮기는 게 목표였습니다. 보유·중복을 체크하고 이미지로 내보내 자랑할 수 있습니다.",
     stack: ["Next.js", "React", "레트로 UI"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/-" }],
+    links: [
+      { label: "사이트", href: "https://ttibook.vercel.app/" },
+      { label: "GitHub", href: "https://github.com/Chajuick/-" },
+    ],
+    shots: [
+      {
+        src: "/shots/ttibook.png",
+        alt: "보유·중복을 표시한 도감 그리드",
+        device: "desktop",
+        caption: "빨간 도감을 화면으로 옮기는 게 목표였다",
+      },
+    ],
   },
   {
     slug: "gatcha-crane",

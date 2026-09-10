@@ -14,24 +14,13 @@ function delay(seconds: number) {
 export function Identity() {
   return (
     <div className="lg:sticky lg:top-24 lg:self-start">
-      <p className="enter label text-fg-muted" style={delay(0.06)}>
-        {profile.role}
-      </p>
-
-      <h1 className="enter display mt-3 text-[clamp(2.5rem,4.5vw,3.5rem)]" style={delay(0.1)}>
+      <p className="enter display text-[clamp(2rem,3.4vw,2.75rem)]" style={delay(0.24)}>
         {profile.name}
-        <span className="display-en mt-1 block text-[0.82em] text-fg-faint">{profile.handle}</span>
-      </h1>
-
-      <p
-        className="enter mt-7 text-lg leading-snug font-medium text-balance text-fg"
-        style={delay(0.16)}
-      >
-        {profile.tagline}
+        <span className="display-en mt-1 block text-[0.8em] text-fg-faint">{profile.handle}</span>
       </p>
 
       {/* 표처럼 보이도록 헤어라인으로만 나눈다. */}
-      <dl className="enter mt-8 border-t border-line" style={delay(0.22)}>
+      <dl className="enter mt-8 border-t border-line" style={delay(0.28)}>
         {profile.meta.map((m) => (
           <div key={m.label} className="border-b border-line py-2.5">
             <dt className="label text-fg-faint">{m.label}</dt>
@@ -45,7 +34,7 @@ export function Identity() {
         target="_blank"
         rel="noreferrer noopener"
         className="enter group mt-7 inline-flex items-center gap-2 text-sm text-fg-muted transition-colors hover:text-accent"
-        style={delay(0.28)}
+        style={delay(0.32)}
       >
         <GithubIcon className="size-4" />
         github.com/{profile.handle}

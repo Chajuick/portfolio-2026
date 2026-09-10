@@ -6,6 +6,7 @@ import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
 import { DeviceFrame } from "@/components/device-frame";
+import { ProjectMark } from "@/components/project-mark";
 import { projects } from "@/lib/data";
 
 /** 케이스 스터디가 있는 것만 상세를 만든다. */
@@ -119,7 +120,11 @@ export default async function WorkDetail({ params }: PageProps<"/work/[slug]">) 
           {project.decisions?.length ? (
             <section>
               <Reveal>
-                <h2 className="label mb-8 text-accent">판단</h2>
+                <div className="mb-8 flex items-end justify-between gap-6">
+                  <h2 className="label text-accent">판단</h2>
+                  {/* 이 제품의 구조. 강조된 부분이 실제로 문제였던 지점이다. */}
+                  <ProjectMark slug={project.slug} index={index} className="w-20 shrink-0" />
+                </div>
               </Reveal>
               <ol className="space-y-10">
                 {project.decisions.map((d, i) => (

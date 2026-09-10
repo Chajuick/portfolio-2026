@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
+import { HeroStatement } from "@/components/hero-statement";
 import { Identity } from "@/components/identity";
 import { Section } from "@/components/section";
 import { Reveal } from "@/components/reveal";
@@ -18,12 +19,13 @@ export default function Home() {
   return (
     <>
       <SiteNav />
+      <HeroStatement />
 
       {/*
         왼쪽은 붙박이 신원, 오른쪽은 흐르는 작업.
         첫 화면에서 자기소개와 첫 제품이 같이 보인다 — 소개를 지나야 작업이 나오지 않는다.
       */}
-      <main className="mx-auto max-w-6xl px-6 py-14 lg:grid lg:grid-cols-[minmax(0,19rem)_1fr] lg:gap-20 lg:py-20">
+      <main className="mx-auto max-w-6xl px-6 py-16 lg:grid lg:grid-cols-[minmax(0,19rem)_1fr] lg:gap-20 lg:py-20">
         <Identity />
 
         <div className="mt-24 lg:mt-0">
