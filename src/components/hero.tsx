@@ -10,8 +10,8 @@ function delay(seconds: number) {
 
 export function Hero() {
   return (
-    <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20 sm:pt-20 sm:pb-28">
-      <div className="grid gap-14 lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-20">
+    <section className="relative overflow-hidden">
+      <div className="mx-auto grid max-w-6xl gap-20 px-6 pt-10 pb-20 sm:pt-20 sm:pb-28 lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-20">
         <div>
           <p className="enter label text-fg-muted" style={delay(0)}>
             {profile.role}
@@ -73,9 +73,13 @@ export function Hero() {
           </div>
         </div>
 
-        {/* 반대 테마 색으로 세운 아치. 비어 있던 오른쪽에 무게를 준다. */}
-        <div className="enter flex justify-center lg:justify-end" style={delay(0.44)}>
-          <div className="surface-invert flex w-full max-w-[260px] justify-center rounded-t-full bg-bg px-9 pt-20 pb-12 sm:max-w-[300px] lg:max-w-[420px] lg:pt-28 lg:pb-20">
+        {/* 화면을 곡선으로 가르는 큰 원. 오른쪽 밖으로 흘러나가 잘린다. */}
+        <div className="enter relative flex justify-center" style={delay(0.44)}>
+          <div
+            aria-hidden
+            className="surface-invert pointer-events-none absolute top-1/2 left-1/2 aspect-square w-[118%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-bg lg:left-0 lg:w-[130vw] lg:max-w-[900px] lg:translate-x-0"
+          />
+          <div className="surface-invert relative w-full max-w-[230px] sm:max-w-[270px] lg:translate-x-14">
             <Mascot />
           </div>
         </div>
