@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { Mascot } from "@/components/mascot";
+import { REPLAY_EVENT } from "@/components/boot-intro";
 import { chatEntries, chatIntro, type ChatEntry } from "@/lib/chat";
 
 /**
@@ -42,7 +43,8 @@ export function Dock() {
     (entry: ChatEntry) => {
       if (busy) return;
       setBusy(true);
-      setAsked((prev) => [...prev, entry.question]);
+      // 동작이 붙은 항목은 목록에 남긴다. 다시 부를 수 있어야 하므로.
+      if (!entry.action) setAsked((prev) => [...prev, entry.question]);
       setMessages((prev) => [...prev, { role: "user", text: entry.question }]);
 
       entry.answer.forEach((line, i) => {
@@ -50,7 +52,12 @@ export function Dock() {
           setTimeout(
             () => {
               setMessages((prev) => [...prev, { role: "bot", text: line }]);
-              if (i === entry.answer.length - 1) setBusy(false);
+              if (i < entry.answer.length - 1) return;
+              setBusy(false);
+              if (entry.action === "replay-intro") {
+                setOpen(false);
+                window.dispatchEvent(new Event(REPLAY_EVENT));
+              }
             },
             420 + i * 520,
           ),

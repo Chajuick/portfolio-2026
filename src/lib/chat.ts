@@ -10,6 +10,8 @@ export type ChatEntry = {
   question: string;
   /** 줄 단위로 찍히는 답 */
   answer: string[];
+  /** 답을 마친 뒤 할 일. 이게 붙은 항목은 계속 남아서 다시 부를 수 있다. */
+  action?: "replay-intro";
 };
 
 export const chatIntro = [
@@ -59,5 +61,10 @@ export const chatEntries: ChatEntry[] = [
   {
     question: "연락은 어떻게 하나요?",
     answer: ["github.com/Chajuick 로 오시면 됩니다."],
+  },
+  {
+    question: "처음 화면 다시 보기",
+    answer: ["다시 켜겠습니다."],
+    action: "replay-intro",
   },
 ];

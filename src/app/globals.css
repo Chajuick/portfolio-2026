@@ -30,8 +30,7 @@
 }
 
 .dark,
-:root:not(.dark) .surface-invert,
-.terminal {
+:root:not(.dark) .surface-invert {
   --bg: #0c0c0b;
   --bg-raised: #141413;
   --bg-sunken: #070706;
@@ -47,6 +46,31 @@
   --screen: #1b1b19;
   --screen-ink: #f3f1ea;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 14px 40px -20px rgb(0 0 0 / 0.85);
+}
+
+/*
+ * 터미널. 테마와 무관하게 늘 어둡다 — 화면이 켜지는 연출이므로.
+ *
+ * 다크 토큰을 그대로 쓰면 안 된다. 다크 테마의 흐린 회색은 #0c0c0b 배경 위에서
+ * 읽히라고 만든 값이 아니라 문서 배경(#0c0c0b)과 거의 붙는다.
+ * 여기서는 배경을 조금 들어올리고 회색을 밝혀 대비를 따로 잡는다.
+ */
+.terminal {
+  --bg: #101010;
+  --bg-raised: #1c1c1a;
+  --bg-sunken: #0a0a09;
+  --fg: #f5f3ee;
+  --fg-muted: #b4afa4;
+  --fg-faint: #8a857b;
+  --line: #34332e;
+  --line-soft: #232320;
+  --line-strong: #f5f3ee;
+  --accent: #ff6a3d;
+  --accent-soft: #3a2118;
+  --accent-fg: #101010;
+  --screen: #1c1c1a;
+  --screen-ink: #f5f3ee;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.6), 0 18px 50px -20px rgb(0 0 0 / 0.9);
 }
 
 @theme inline {
