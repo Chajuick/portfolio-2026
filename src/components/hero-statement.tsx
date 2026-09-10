@@ -41,8 +41,13 @@ const slides = projects
  */
 export function HeroStatement() {
   return (
-    <section className="stage stage-glow relative overflow-hidden bg-bg text-fg">
-      <div className="relative mx-auto max-w-6xl px-6 pt-16 pb-16 sm:pt-24 sm:pb-20">
+    /*
+      얼굴 화면이 뷰포트를 꽉 채웠으므로 히어로도 같은 자리를 채운다.
+      연출이 끝나도 화면 크기가 바뀌지 않아야 이어진 것으로 읽힌다.
+      내비(4rem)를 뺀 만큼이 정확히 한 화면이다.
+    */
+    <section className="stage stage-glow relative flex min-h-[calc(100dvh-4rem)] flex-col justify-center overflow-hidden bg-bg text-fg">
+      <div className="relative mx-auto w-full max-w-6xl px-6 py-14 sm:py-16">
         <div className="grid gap-14 lg:grid-cols-[0.92fr_1.08fr] lg:items-center lg:gap-16">
           <div>
             <p
@@ -74,7 +79,7 @@ export function HeroStatement() {
         </div>
 
         <dl
-          className="enter mt-16 grid grid-cols-2 gap-px overflow-hidden border-y border-line bg-line sm:grid-cols-4"
+          className="enter mt-12 grid grid-cols-2 gap-px overflow-hidden border-y border-line bg-line sm:grid-cols-4"
           style={{ "--enter-delay": "0.34s" } as React.CSSProperties}
         >
           {counts.map((c) => (
@@ -84,6 +89,19 @@ export function HeroStatement() {
             </div>
           ))}
         </dl>
+      </div>
+
+      {/* 아래에 더 있다는 표시. */}
+      <div
+        className="enter pointer-events-none absolute inset-x-0 bottom-7 flex justify-center"
+        style={{ "--enter-delay": "0.5s" } as React.CSSProperties}
+      >
+        <div className="flex flex-col items-center gap-3">
+          <span className="label-en text-fg-faint">Scroll</span>
+          <span className="relative block h-10 w-px overflow-hidden bg-line">
+            <span className="scroll-cue absolute inset-x-0 top-0 h-3.5 bg-accent" />
+          </span>
+        </div>
       </div>
     </section>
   );

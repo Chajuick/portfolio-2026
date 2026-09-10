@@ -46,7 +46,15 @@ export function BootIntro() {
     timers.current.push(setTimeout(fn, ms));
   }, []);
 
-  /** 본문 등장 연출을 켜는 신호. 연출이 끝나야 헤더와 내용이 올라온다. */
+  const lockScroll = useCallback((on: boolean) => {
+    document.documentElement.classList.toggle("scroll-locked", on);
+  }, []);
+
+  /**
+   * 본문 등장 연출을 켜는 신호.
+   * 히어로가 먼저 서고, 헤더가 내려온 뒤에 스크롤을 연다 —
+   * 연출이 끝나자마자 스크롤이 열리면 첫 화면을 볼 새가 없다.
+   */
   const releasePage = useCallback(() => {
     document.documentElement.classList.add("booted");
   }, []);
@@ -55,12 +63,13 @@ export function BootIntro() {
     clearTimers();
     setPhase("hidden");
     releasePage();
+    timers.current.push(setTimeout(() => lockScroll(false), 1250));
     try {
       sessionStorage.setItem(SEEN_KEY, "1");
     } catch {
       // 세션 저장소를 못 쓰면 매번 보여준다. 그 편이 안 보이는 것보다 낫다.
     }
-  }, [clearTimers, releasePage]);
+  }, [clearTimers, lockScroll, releasePage]);
 
   /** 건너뛰기. 화면을 끄는 연출만 짧게 보여주고 걷는다. */
   const skip = useCallback(() => {
@@ -72,6 +81,9 @@ export function BootIntro() {
   /** 상태 변경은 전부 타이머 안에서 한다. 효과 본문에서 바로 바꾸지 않는다. */
   const start = useCallback(() => {
     clearTimers();
+    lockScroll(true);
+    // 다시 볼 때도 헤더와 본문이 처음처럼 올라오게 되돌린다.
+    document.documentElement.classList.remove("booted");
 
     /*
       각 구간이 앞 동작을 끝까지 보고 넘어가게 잡았다.
@@ -118,7 +130,7 @@ export function BootIntro() {
     const helloDone = helloAt + 120 + GREETING.length * 95;
     after(helloDone + 420, () => setPhase("out"));
     after(helloDone + 420 + 560, finish);
-  }, [after, clearTimers, finish]);
+  }, [after, clearTimers, finish, lockScroll]);
 
   // 첫 방문에서 한 번. 그 밖에는 곧바로 본문 연출을 풀어준다.
   useEffect(() => {
@@ -137,8 +149,11 @@ export function BootIntro() {
     }
 
     start();
-    return clearTimers;
-  }, [clearTimers, releasePage, start]);
+    return () => {
+      clearTimers();
+      lockScroll(false);
+    };
+  }, [clearTimers, lockScroll, releasePage, start]);
 
   // 도크에서 부르면 다시 돈다.
   useEffect(() => {
