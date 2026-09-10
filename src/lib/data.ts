@@ -1,14 +1,45 @@
 export const profile = {
   name: "차주익",
   handle: "chajuick",
-  role: "프론트엔드 개발자",
-  tagline: "제조 현장의 복잡한 업무를, 쓸 만한 화면으로 옮깁니다.",
+  role: "프론트엔드 엔지니어",
+  tagline: "매일 여덟 시간 붙잡고 있는 화면을 만듭니다.",
+  intro:
+    "제조·회계 도메인의 B2B SaaS. 화면 한 장이 누군가의 하루 업무 시간을 좌우하는 자리라, 예쁜 것보다 헷갈리지 않는 것을 먼저 봅니다.",
+  meta: [
+    { label: "지금", value: "B2B SaaS 프론트엔드 전담" },
+    { label: "도메인", value: "제조 · 회계 · 문서관리" },
+    { label: "주로 쓰는 것", value: "React · TypeScript · Next.js" },
+  ],
   bio: [
-    "B2B 제조·회계·문서관리 SaaS의 프론트엔드를 맡고 있습니다.",
-    "화면 한 장이 누군가의 하루 업무 시간을 좌우하는 도메인이라, 예쁜 것보다 헷갈리지 않는 것을 먼저 생각합니다.",
-    "퇴근하고는 만들고 싶은 걸 만듭니다. 여기 있는 개인 프로젝트 대부분은 제가 실제로 쓰려고 만든 것들입니다.",
+    "B2B 제조·회계·문서관리 SaaS의 프론트엔드를 맡고 있습니다. 네 곳의 고객사 시스템과 한 곳의 회계 제품이 제가 짠 화면 위에서 돌아갑니다.",
+    "실수를 규칙으로 막지 않으려고 합니다. 규칙은 사람이 기억해야 하지만 검사는 도구가 기억합니다. 멀티테넌트 격리도, 다크 모드 색도, 인쇄 화면도 같은 방식으로 처리했습니다.",
+    "퇴근하고는 직접 쓰려고 만듭니다. 아래 개인 프로젝트 대부분은 제가 지금도 쓰고 있는 것들입니다.",
   ],
   github: "https://github.com/Chajuick",
+} as const;
+
+/** 섹션 머리글. 화면 문구는 컴포넌트가 아니라 여기서 고친다. */
+export const sectionCopy = {
+  work: {
+    label: "Work",
+    title: "현장에서 돌아가는 제품",
+    lead: "고객사 이름과 인프라 정보는 뺐습니다. 무엇이 문제였고 왜 그렇게 판단했는지만 남겼습니다.",
+  },
+  lab: {
+    label: "Lab",
+    title: "직접 쓰려고 만든 것",
+    lead: "필요해서 만들었고, 만들었으니 계속 씁니다. 기능보다 '왜 아무도 이렇게 안 만들었지'에서 출발한 것이 많습니다.",
+  },
+  craft: {
+    label: "Craft",
+    title: "기술을 시험한 것",
+    lead: "쓸모를 따지지 않고, 구현이 궁금해서 끝까지 가본 기록입니다.",
+  },
+  about: {
+    label: "About",
+    title: "소개",
+    lead: undefined as string | undefined,
+  },
 } as const;
 
 export type Metric = { label: string; value: string };

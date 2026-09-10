@@ -3,38 +3,69 @@ import { ArrowDown } from "lucide-react";
 import { Mascot } from "@/components/mascot";
 import { profile } from "@/lib/data";
 
+/** 등장 순서. 지연을 CSS 변수로 넘겨 한 줄씩 올라오게 한다. */
+function delay(seconds: number) {
+  return { "--enter-delay": `${seconds}s` } as React.CSSProperties;
+}
+
 export function Hero() {
   return (
-    <section className="relative mx-auto max-w-6xl px-6 pt-14 pb-24 sm:pt-24 sm:pb-32">
-      <div className="grid items-center gap-16 lg:grid-cols-[1.35fr_1fr]">
+    <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20 sm:pt-20 sm:pb-28">
+      <div className="grid gap-14 lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-20">
         <div>
-          <p className="mb-6 flex items-center gap-2.5 font-mono text-xs tracking-[0.2em] text-fg-muted uppercase">
+          <p className="enter label flex items-center gap-2.5 text-fg-muted" style={delay(0)}>
             <span className="inline-block size-1.5 rounded-full bg-accent" />
             {profile.role}
           </p>
 
-          <h1 className="display text-[clamp(3rem,10vw,6.5rem)]">
+          <h1 className="enter display mt-7 text-[clamp(3.25rem,11vw,7rem)]" style={delay(0.08)}>
             {profile.name}
-            <span className="block text-fg-faint">{profile.handle}</span>
+            <span className="mt-1 block text-fg-faint">{profile.handle}</span>
           </h1>
 
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-fg-muted sm:text-xl">
+          <p
+            className="enter mt-9 max-w-xl text-xl leading-snug font-medium text-fg text-balance sm:text-2xl"
+            style={delay(0.16)}
+          >
             {profile.tagline}
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
+          <p
+            className="enter mt-4 max-w-xl text-base leading-relaxed text-fg-muted"
+            style={delay(0.22)}
+          >
+            {profile.intro}
+          </p>
+
+          {/* 메타. 표처럼 보이도록 헤어라인으로만 나눈다. */}
+          <dl className="enter mt-10 max-w-xl border-t border-line" style={delay(0.3)}>
+            {profile.meta.map((m) => (
+              <div
+                key={m.label}
+                className="flex items-baseline gap-6 border-b border-line py-2.5"
+              >
+                <dt className="label w-24 shrink-0 text-fg-faint">{m.label}</dt>
+                <dd className="text-sm text-fg-muted">{m.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="enter mt-10 flex flex-wrap items-center gap-3" style={delay(0.38)}>
             <Link
-              href="#work"
-              className="inline-flex items-center gap-2 rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition-opacity hover:opacity-90"
+              href="/#work"
+              className="group inline-flex items-center gap-2 rounded-full bg-fg px-6 py-3 text-sm font-medium text-bg transition-transform duration-300 hover:-translate-y-0.5"
             >
               작업 보기
-              <ArrowDown aria-hidden className="size-4" />
+              <ArrowDown
+                aria-hidden
+                className="size-4 transition-transform duration-300 group-hover:translate-y-0.5"
+              />
             </Link>
             <a
               href={profile.github}
               target="_blank"
               rel="noreferrer noopener"
-              className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-line-strong"
+              className="inline-flex items-center gap-2 rounded-full border border-line px-6 py-3 text-sm font-medium text-fg transition-colors duration-300 hover:border-line-strong"
             >
               GitHub
               <span className="sr-only">(새 탭에서 열림)</span>
@@ -42,7 +73,10 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="mx-auto w-full max-w-[280px] pt-16 lg:pt-0">
+        <div
+          className="enter w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[320px] lg:justify-self-end"
+          style={delay(0.44)}
+        >
           <Mascot />
         </div>
       </div>

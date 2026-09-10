@@ -1,67 +1,53 @@
 import Link from "next/link";
-import { ArrowUpRight, Lock } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/data";
 
-/** 케이스 스터디가 있는 프로젝트만 상세로 넘어간다. */
-function hasStudy(p: Project) {
-  return Boolean(p.problem || p.decisions?.length);
-}
-
-export function ProjectCard({ project, index }: { project: Project; index?: number }) {
-  const detail = hasStudy(project);
+/**
+ * 개인 프로젝트 항목.
+ * 테두리 상자 대신 위쪽 헤어라인 하나만 둔다. 상자가 많아지면 내용보다 상자가 먼저 읽힌다.
+ * compact는 실험 목록용 — 요약을 접고 제목만 세운다.
+ */
+export function ProjectCard({
+  project,
+  index,
+  compact = false,
+}: {
+  project: Project;
+  index?: number;
+  compact?: boolean;
+}) {
+  const detail = Boolean(project.problem || project.decisions?.length);
   const Wrapper = detail ? Link : "div";
-  const wrapperProps = detail ? { href: `/work/${project.slug}` } : {};
 
   return (
     <Wrapper
-      {...(wrapperProps as { href: string })}
-      className={`group relative flex h-full flex-col rounded-2xl border border-line bg-bg-raised p-6 transition-all duration-300 ${
-        detail ? "hover:-translate-y-1 hover:border-line-strong hover:shadow-[var(--shadow)]" : ""
-      }`}
+      {...({ href: detail ? `/work/${project.slug}` : undefined } as { href: string })}
+      className="group flex h-full flex-col border-t border-line pt-5 transition-colors duration-500 hover:border-line-strong"
     >
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div className="flex items-baseline gap-2.5">
-          {typeof index === "number" && (
-            <span className="font-mono text-xs text-fg-faint">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          )}
-          <h3 className="text-lg font-bold tracking-tight text-fg">{project.title}</h3>
-        </div>
+      <div className="flex items-center justify-between gap-3">
+        <span className="label-en text-fg-faint">
+          {typeof index === "number" ? String(index + 1).padStart(2, "0") : ""}
+        </span>
         {detail && (
           <ArrowUpRight
             aria-hidden
-            className="size-4 shrink-0 text-fg-faint transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-accent"
+            className="size-4 -translate-x-1 text-accent opacity-0 transition-all duration-500 group-hover:translate-x-0 group-hover:opacity-100"
           />
         )}
       </div>
 
-      <p className="mb-1 text-sm font-medium text-accent">{project.subtitle}</p>
-      <p className="mb-5 grow text-sm leading-relaxed text-fg-muted">{project.summary}</p>
+      <h3 className="mt-4 text-lg font-bold tracking-tight text-fg transition-transform duration-500 group-hover:translate-x-0.5">
+        {project.title}
+      </h3>
+      <p className="mt-1.5 text-sm font-medium text-accent">{project.subtitle}</p>
 
-      <div className="mt-auto space-y-3">
-        <ul className="flex flex-wrap gap-1.5">
-          {project.stack.slice(0, 4).map((s) => (
-            <li
-              key={s}
-              className="rounded-full border border-line px-2.5 py-1 font-mono text-[11px] text-fg-muted"
-            >
-              {s}
-            </li>
-          ))}
-        </ul>
-        <div className="flex items-center justify-between border-t border-line pt-3 font-mono text-[11px] text-fg-faint">
-          <span>{project.year}</span>
-          {project.private ? (
-            <span className="flex items-center gap-1">
-              <Lock aria-hidden className="size-3" />
-              비공개
-            </span>
-          ) : project.links?.length ? (
-            <span>{project.links[0].label}</span>
-          ) : null}
-        </div>
-      </div>
+      {!compact && (
+        <p className="mt-3.5 grow text-sm leading-relaxed text-fg-muted">{project.summary}</p>
+      )}
+
+      <p className={`text-[11px] text-fg-faint ${compact ? "mt-4" : "mt-5"}`}>
+        {project.stack.slice(0, compact ? 2 : 3).join(" · ")}
+      </p>
     </Wrapper>
   );
 }
