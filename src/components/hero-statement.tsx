@@ -59,28 +59,28 @@ export function HeroStatement() {
 
             <h1
               className="enter display mt-6 text-[clamp(2.25rem,4.4vw,3.5rem)]"
-              style={{ "--enter-delay": "0.08s" } as React.CSSProperties}
+              style={{ "--enter-delay": "0.06s" } as React.CSSProperties}
             >
               <Tagline />
             </h1>
 
             <p
               className="enter mt-7 max-w-md text-base leading-relaxed text-fg-muted"
-              style={{ "--enter-delay": "0.16s" } as React.CSSProperties}
+              style={{ "--enter-delay": "0.12s" } as React.CSSProperties}
             >
               제조·회계 도메인의 B2B SaaS를 만듭니다. 고객사 네 곳의 시스템과 회계 제품 한 곳이
               제가 짠 화면 위에서 돌아갑니다.
             </p>
           </div>
 
-          <div className="enter" style={{ "--enter-delay": "0.24s" } as React.CSSProperties}>
+          <div className="enter" style={{ "--enter-delay": "0.18s" } as React.CSSProperties}>
             <Showreel slides={slides} />
           </div>
         </div>
 
         <dl
           className="enter mt-12 grid grid-cols-2 gap-px overflow-hidden border-y border-line bg-line sm:grid-cols-4"
-          style={{ "--enter-delay": "0.34s" } as React.CSSProperties}
+          style={{ "--enter-delay": "0.26s" } as React.CSSProperties}
         >
           {counts.map((c) => (
             <div key={c.label} className="bg-bg px-1 py-5 sm:px-0">
@@ -94,7 +94,7 @@ export function HeroStatement() {
       {/* 아래에 더 있다는 표시. */}
       <div
         className="enter pointer-events-none absolute inset-x-0 bottom-7 flex justify-center"
-        style={{ "--enter-delay": "0.5s" } as React.CSSProperties}
+        style={{ "--enter-delay": "0.4s" } as React.CSSProperties}
       >
         <div className="flex flex-col items-center gap-3">
           <span className="label-en text-fg-faint">Scroll</span>

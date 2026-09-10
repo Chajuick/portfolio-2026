@@ -26,7 +26,7 @@ export const REPLAY_EVENT = "chajuick:replay";
 
 const BOOT_LINES = ["chajuick 2026.9", "프로필 불러오는 중… 완료"];
 
-type Phase = "hidden" | "power" | "boot" | "typing" | "fold" | "face" | "hello" | "out";
+type Phase = "hidden" | "power" | "boot" | "typing" | "fold" | "face" | "hello" | "reveal";
 
 export function BootIntro() {
   const [phase, setPhase] = useState<Phase>("hidden");
@@ -71,12 +71,22 @@ export function BootIntro() {
     }
   }, [clearTimers, lockScroll, releasePage]);
 
-  /** 건너뛰기. 화면을 끄는 연출만 짧게 보여주고 걷는다. */
-  const skip = useCallback(() => {
-    clearTimers();
-    setPhase("out");
-    after(280, finish);
-  }, [after, clearTimers, finish]);
+  /**
+   * 끝맺음. 오버레이를 옅게 지우면서 그 아래 본문을 동시에 올린다.
+   * 순서대로 하면 중간에 빈 화면이 한 박자 보인다.
+   */
+  const reveal = useCallback(
+    (fadeMs: number) => {
+      clearTimers();
+      setPhase("reveal");
+      releasePage();
+      after(fadeMs, finish);
+    },
+    [after, clearTimers, finish, releasePage],
+  );
+
+  /** 건너뛰기. 같은 방식으로, 더 짧게. */
+  const skip = useCallback(() => reveal(360), [reveal]);
 
   /** 상태 변경은 전부 타이머 안에서 한다. 효과 본문에서 바로 바꾸지 않는다. */
   const start = useCallback(() => {
@@ -128,9 +138,8 @@ export function BootIntro() {
     });
 
     const helloDone = helloAt + 120 + GREETING.length * 95;
-    after(helloDone + 420, () => setPhase("out"));
-    after(helloDone + 420 + 560, finish);
-  }, [after, clearTimers, finish, lockScroll]);
+    after(helloDone + 420, () => reveal(780));
+  }, [after, clearTimers, lockScroll, reveal]);
 
   // 첫 방문에서 한 번. 그 밖에는 곧바로 본문 연출을 풀어준다.
   useEffect(() => {
@@ -177,9 +186,11 @@ export function BootIntro() {
   return (
     <div aria-hidden onClick={skip} className="terminal fixed inset-0 z-[100] cursor-pointer bg-bg">
       <div
-        data-off={phase === "fold" || phase === "out"}
+        data-off={phase === "fold"}
+        data-reveal={phase === "reveal"}
         className="boot-screen scanlines relative flex h-full w-full items-center justify-center bg-bg"
       >
+        <div className="boot-body flex h-full w-full items-center justify-center">
         {isFace ? (
           /* 화면 전체가 얼굴이다. */
           <div className="flex flex-col items-center gap-[9vmin]">
@@ -218,6 +229,8 @@ export function BootIntro() {
             )}
           </div>
         )}
+
+        </div>
 
         <p className="label absolute right-6 bottom-6 text-fg-faint">아무 키나 눌러 건너뛰기</p>
       </div>
