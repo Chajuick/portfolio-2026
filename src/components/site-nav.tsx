@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { GithubIcon } from "@/components/icons";
+import { Mascot } from "@/components/mascot";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { sections } from "@/lib/site";
 import { profile } from "@/lib/data";
@@ -52,12 +53,8 @@ export function SiteNav() {
         aria-label="주요"
         className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-6"
       >
-        <Link
-          href="/"
-          className="text-sm font-bold tracking-tight text-fg transition-colors hover:text-accent"
-        >
-          {profile.name}
-          <span className="font-mono font-normal text-fg-faint"> / {profile.handle}</span>
+        <Link href="/" aria-label={`${profile.name} 홈`} className="block w-9">
+          <Mascot variant="mark" className="w-full" />
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-2">

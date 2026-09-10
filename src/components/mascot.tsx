@@ -6,10 +6,17 @@ import { motion, useReducedMotion } from "motion/react";
 /**
  * 2023년 판의 모니터 얼굴을 옮겨온 것.
  * 화면 안에는 눈 둘뿐이다. 입도, 입을 대신하는 무엇도 두지 않는다.
- * 시선 추적과 깜빡임만으로 충분하다.
- * 장식이므로 스크린리더에서는 감춘다.
+ *
+ * mark는 이름 옆에 놓는 작은 판이다. 이 크기에서는 커서를 따라가는 눈이
+ * 캐릭터가 아니라 디테일로 읽힌다. 장식이므로 스크린리더에서는 감춘다.
  */
-export function Mascot({ className = "" }: { className?: string }) {
+export function Mascot({
+  className = "",
+  variant = "full",
+}: {
+  className?: string;
+  variant?: "full" | "mark";
+}) {
   const reduced = useReducedMotion();
   const wrapRef = useRef<HTMLDivElement>(null);
   const [pupil, setPupil] = useState({ x: 0, y: 0 });
@@ -49,6 +56,43 @@ export function Mascot({ className = "" }: { className?: string }) {
     loop();
     return () => clearTimeout(timer);
   }, [reduced]);
+
+  if (variant === "mark") {
+    return (
+      <div ref={wrapRef} className={`select-none ${className}`} aria-hidden="true">
+        <svg viewBox="0 0 64 52" className="w-full">
+          <rect
+            x="2.5"
+            y="2.5"
+            width="59"
+            height="47"
+            rx="12"
+            fill="var(--bg-raised)"
+            stroke="var(--line-strong)"
+            strokeWidth="5"
+          />
+          <g
+            transform={`translate(${pupil.x * 0.5} ${pupil.y * 0.5})`}
+            style={{
+              transition: reduced ? undefined : "transform 220ms cubic-bezier(0.16,1,0.3,1)",
+            }}
+          >
+            {blink ? (
+              <>
+                <rect x="18" y="24" width="10" height="4" rx="2" fill="var(--fg)" />
+                <rect x="36" y="24" width="10" height="4" rx="2" fill="var(--fg)" />
+              </>
+            ) : (
+              <>
+                <rect x="20" y="17" width="6" height="18" rx="3" fill="var(--fg)" />
+                <rect x="38" y="17" width="6" height="18" rx="3" fill="var(--fg)" />
+              </>
+            )}
+          </g>
+        </svg>
+      </div>
+    );
+  }
 
   return (
     <div ref={wrapRef} className={`relative select-none ${className}`} aria-hidden="true">

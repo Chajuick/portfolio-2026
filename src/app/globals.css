@@ -200,19 +200,6 @@ body {
   }
 }
 
-/* 흐르는 띠. 목록을 두 벌 이어 붙였으므로 절반만 밀면 제자리로 돌아온다. */
-@media (prefers-reduced-motion: no-preference) {
-  .ticker {
-    animation: ticker 48s linear infinite;
-  }
-}
-
-@keyframes ticker {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
 /* 스크롤 진행 막대. 스크롤 기반 애니메이션이 있는 브라우저에서만 그린다. */
 .scroll-progress {
   display: none;
