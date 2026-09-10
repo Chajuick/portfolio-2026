@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, ArrowUpRight, Lock } from "lucide-react";
 import { SiteNav } from "@/components/site-nav";
 import { SiteFooter } from "@/components/site-footer";
 import { Reveal } from "@/components/reveal";
+import { DeviceFrame } from "@/components/device-frame";
 import { projects } from "@/lib/data";
 
 /** 케이스 스터디가 있는 것만 상세를 만든다. */
@@ -34,6 +35,9 @@ export default async function WorkDetail({ params }: PageProps<"/work/[slug]">) 
   if (!project) notFound();
 
   const next = studies[(index + 1) % studies.length];
+  const shots = project.shots ?? [];
+  const desktopShots = shots.filter((s) => s.device === "desktop");
+  const mobileShots = shots.filter((s) => s.device === "mobile");
 
   return (
     <>
@@ -85,6 +89,25 @@ export default async function WorkDetail({ params }: PageProps<"/work/[slug]">) 
           <Reveal>
             <p className="text-xl leading-relaxed text-fg text-balance">{project.summary}</p>
           </Reveal>
+
+          {shots.length > 0 && (
+            <Reveal as="section">
+              <h2 className="label mb-6 text-accent">화면</h2>
+              {/* 본문보다 넓게 빼서 화면이 제 크기로 보이게 한다. */}
+              <div className="space-y-8 lg:-mx-20">
+                {desktopShots.map((shot) => (
+                  <DeviceFrame key={shot.src} shot={shot} />
+                ))}
+                {mobileShots.length > 0 && (
+                  <div className="flex flex-wrap gap-5">
+                    {mobileShots.map((shot) => (
+                      <DeviceFrame key={shot.src} shot={shot} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Reveal>
+          )}
 
           {project.problem && (
             <Reveal as="section">

@@ -46,6 +46,17 @@ export const sectionCopy = {
 
 export type Metric = { label: string; value: string };
 
+/**
+ * 상세 페이지에 기기 테두리로 넣는 실제 화면.
+ * 파일은 public/shots/ 에 두고 src는 "/shots/파일명"으로 적는다.
+ */
+export type Shot = {
+  src: string;
+  alt: string;
+  device: "desktop" | "mobile";
+  caption?: string;
+};
+
 export type Project = {
   slug: string;
   title: string;
@@ -64,6 +75,7 @@ export type Project = {
   links?: { label: string; href: string }[];
   /** 공개 저장소가 없는 경우의 사유 */
   private?: string;
+  shots?: Shot[];
 };
 
 export const projects: Project[] = [
