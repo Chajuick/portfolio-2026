@@ -246,11 +246,32 @@ body {
   }
 }
 
-/* 첫 화면 등장. 스크롤과 무관하므로 JS를 타지 않는다. */
+/*
+ * 첫 화면 등장.
+ * 부팅 연출이 끝나야 시작한다 — html에 booted가 붙는 순간이 그 신호다.
+ * 클래스가 없으면 애니메이션 자체가 정의되지 않으므로, 스크립트가 죽어도
+ * 내용은 그냥 제자리에 보인다.
+ */
 @media (prefers-reduced-motion: no-preference) {
-  .enter {
+  html.booted .enter {
     animation: enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
     animation-delay: var(--enter-delay, 0s);
+  }
+
+  /* 헤더는 위에서 내려온다. */
+  html.booted .enter-down {
+    animation: enter-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+}
+
+@keyframes enter-down {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -366,7 +387,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.16;
   background: repeating-linear-gradient(
     to bottom,
     rgb(0 0 0 / 0.28) 0px,
@@ -374,6 +395,50 @@ body {
     transparent 1px,
     transparent 3px
   );
+}
+
+/*
+ * 화면 전체가 모니터의 얼굴이 되는 구간.
+ * 마스코트를 구석에 둔 그림이 아니라, 보고 있는 화면 자체가 그 화면이라는 뜻이다.
+ */
+@keyframes eyes-look {
+  0%,
+  14% {
+    transform: none;
+  }
+  26%,
+  40% {
+    transform: translateX(-16%);
+  }
+  52%,
+  68% {
+    transform: translateX(16%);
+  }
+  80%,
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes eye-blink {
+  0%,
+  42%,
+  52%,
+  100% {
+    transform: scaleY(1);
+  }
+  47% {
+    transform: scaleY(0.06);
+  }
+}
+
+.eyes {
+  animation: eyes-look 2.6s cubic-bezier(0.45, 0, 0.2, 1) both;
+}
+
+.eye {
+  transform-origin: center;
+  animation: eye-blink 2.6s ease-in-out both;
 }
 
 /* 스크롤 진행 막대. 스크롤 기반 애니메이션이 있는 브라우저에서만 그린다. */

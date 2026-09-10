@@ -5,6 +5,7 @@ import { X } from "lucide-react";
 import { Mascot } from "@/components/mascot";
 import { REPLAY_EVENT } from "@/components/boot-intro";
 import { chatEntries, chatIntro, type ChatEntry } from "@/lib/chat";
+import { COMMAND_EVENT, type CommandDetail } from "@/lib/site";
 
 /**
  * 부팅 연출에서 꺼진 chajuick이 내려와 있는 자리.
@@ -21,6 +22,7 @@ export function Dock() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [asked, setAsked] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
+  const [typing, setTyping] = useState("");
   const logRef = useRef<HTMLDivElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
@@ -67,6 +69,42 @@ export function Dock() {
     [busy],
   );
 
+  /**
+   * 내비를 누르면 같은 명령을 여기서도 친다.
+   * 이동은 링크가 이미 하고 있으므로, 여기서는 흔적만 남긴다.
+   */
+  useEffect(() => {
+    const onCommand = (e: Event) => {
+      const { command, reply } = (e as CustomEvent<CommandDetail>).detail;
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+
+      setOpen(true);
+      setTyping("");
+
+      command.split("").forEach((_, i) => {
+        timers.current.push(
+          setTimeout(() => setTyping(command.slice(0, i + 1)), 60 + i * 55),
+        );
+      });
+
+      const done = 60 + command.length * 55;
+      timers.current.push(
+        setTimeout(() => {
+          setTyping("");
+          setMessages((prev) => [
+            ...prev,
+            { role: "user", text: command },
+            { role: "bot", text: reply },
+          ]);
+        }, done + 260),
+      );
+    };
+
+    window.addEventListener(COMMAND_EVENT, onCommand);
+    return () => window.removeEventListener(COMMAND_EVENT, onCommand);
+  }, []);
+
   const remaining = chatEntries.filter((e) => !asked.includes(e.question));
 
   return (
@@ -105,6 +143,13 @@ export function Dock() {
                 {m.role === "user" ? `> ${m.text}` : m.text}
               </p>
             ))}
+
+            {typing && (
+              <p className="text-accent">
+                &gt; {typing}
+                <span className="caret ml-0.5 inline-block h-3 w-[6px] translate-y-0.5 bg-accent" />
+              </p>
+            )}
 
             {busy && <span className="caret inline-block h-3.5 w-[7px] bg-accent" />}
           </div>

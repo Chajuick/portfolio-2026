@@ -6,7 +6,7 @@ import { motion } from "motion/react";
 import { GithubIcon } from "@/components/icons";
 import { Mascot } from "@/components/mascot";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { sections } from "@/lib/site";
+import { sections, COMMAND_EVENT, type CommandDetail } from "@/lib/site";
 import { profile } from "@/lib/data";
 
 export function SiteNav() {
@@ -45,7 +45,7 @@ export function SiteNav() {
 
   return (
     <header
-      className={`sticky top-0 z-50 transition-colors duration-500 ${
+      className={`enter-down sticky top-0 z-50 transition-colors duration-500 ${
         solid ? "border-b border-line bg-bg/80 backdrop-blur-xl" : "border-b border-transparent"
       }`}
     >
@@ -66,6 +66,15 @@ export function SiteNav() {
                   <Link
                     href={s.href}
                     aria-current={on ? "true" : undefined}
+                    onClick={() => {
+                      // 이동은 링크가 그대로 한다. 도크는 같은 명령을 받아치기만 한다 —
+                      // 연출 때문에 이동이 늦어지면 두 번째 클릭부터 성가시다.
+                      window.dispatchEvent(
+                        new CustomEvent<CommandDetail>(COMMAND_EVENT, {
+                          detail: { command: s.command, reply: `${s.label} 화면으로 이동합니다.` },
+                        }),
+                      );
+                    }}
                     className={`relative z-10 block px-3.5 py-1.5 text-sm transition-colors duration-300 ${
                       on ? "text-fg" : "text-fg-muted hover:text-fg"
                     }`}
