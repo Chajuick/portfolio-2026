@@ -1,10 +1,12 @@
 export const profile = {
   name: "차주익",
-  handle: "chajuick",
+  handle: "Chajuick",
   role: "프론트엔드 엔지니어",
-  tagline: "매일 여덟 시간 붙잡고 있는 화면을 만듭니다.",
-  intro:
-    "제조·회계 도메인의 B2B SaaS. 화면 한 장이 누군가의 하루 업무 시간을 좌우하는 자리라, 예쁜 것보다 헷갈리지 않는 것을 먼저 봅니다.",
+  tagline: "일상과 업무에 녹아드는 화면을 만듭니다.",
+  intro: [
+    "매일 곁에 두고 싶은 프로그램을 만듭니다.",
+    "편안하게 사용할 수 있고, 필요할 때 도움이 되는 소프트웨어를 지향합니다.",
+  ],
   meta: [
     { label: "지금", value: "B2B SaaS 프론트엔드 전담" },
     { label: "도메인", value: "제조 · 회계 · 문서관리" },

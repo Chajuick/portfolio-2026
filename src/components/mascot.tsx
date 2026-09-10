@@ -5,8 +5,8 @@ import { motion, useReducedMotion } from "motion/react";
 
 /**
  * 2023년 판의 모니터 얼굴을 옮겨온 것.
- * 눈동자가 커서를 따라가는 동작만 남기고, 웃는 입은 뺐다.
- * 살아있다는 신호는 화면 안에서 깜빡이는 커서가 대신한다.
+ * 화면 안에는 눈 둘뿐이다. 입도, 입을 대신하는 무엇도 두지 않는다.
+ * 시선 추적과 깜빡임만으로 충분하다.
  * 장식이므로 스크린리더에서는 감춘다.
  */
 export function Mascot({ className = "" }: { className?: string }) {
@@ -59,9 +59,6 @@ export function Mascot({ className = "" }: { className?: string }) {
         transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
       >
         <defs>
-          <filter id="mascot-glow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="14" />
-          </filter>
           <clipPath id="mascot-screen">
             <rect x="26" y="20" width="148" height="96" rx="9" />
           </clipPath>
@@ -69,17 +66,6 @@ export function Mascot({ className = "" }: { className?: string }) {
             <rect width="3" height="1" fill="var(--screen-ink)" />
           </pattern>
         </defs>
-
-        {/* 화면에서 새어나오는 빛 */}
-        <ellipse
-          cx="100"
-          cy="72"
-          rx="62"
-          ry="42"
-          fill="var(--accent)"
-          opacity="0.16"
-          filter="url(#mascot-glow)"
-        />
 
         {/* 받침 */}
         <rect x="94" y="126" width="12" height="22" rx="2" fill="var(--fg-faint)" opacity="0.55" />
@@ -108,34 +94,21 @@ export function Mascot({ className = "" }: { className?: string }) {
           >
             {blink ? (
               <>
-                <rect x="66" y="58" width="20" height="4" rx="2" fill="var(--screen-ink)" />
-                <rect x="114" y="58" width="20" height="4" rx="2" fill="var(--screen-ink)" />
+                <rect x="66" y="66" width="20" height="4" rx="2" fill="var(--screen-ink)" />
+                <rect x="114" y="66" width="20" height="4" rx="2" fill="var(--screen-ink)" />
               </>
             ) : (
               <>
-                <rect x="70" y="44" width="12" height="32" rx="6" fill="var(--screen-ink)" />
-                <rect x="118" y="44" width="12" height="32" rx="6" fill="var(--screen-ink)" />
+                <rect x="70" y="52" width="12" height="32" rx="6" fill="var(--screen-ink)" />
+                <rect x="118" y="52" width="12" height="32" rx="6" fill="var(--screen-ink)" />
               </>
             )}
           </g>
-
-          {/* 입 대신 커서 */}
-          <rect x="93" y="92" width="14" height="3" rx="1.5" fill="var(--accent)">
-            <animate
-              attributeName="opacity"
-              values="1;1;0;0;1"
-              keyTimes="0;0.45;0.5;0.95;1"
-              dur="1.4s"
-              repeatCount="indefinite"
-            />
-          </rect>
 
           {/* 주사선 */}
           <rect x="26" y="20" width="148" height="96" fill="url(#mascot-scan)" opacity="0.06" />
         </g>
 
-        {/* 전원 표시 */}
-        <circle cx="100" cy="121" r="1.8" fill="var(--accent)" />
       </motion.svg>
     </div>
   );

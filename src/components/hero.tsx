@@ -13,8 +13,7 @@ export function Hero() {
     <section className="relative mx-auto max-w-6xl px-6 pt-10 pb-20 sm:pt-20 sm:pb-28">
       <div className="grid gap-14 lg:grid-cols-[1.45fr_1fr] lg:items-center lg:gap-20">
         <div>
-          <p className="enter label flex items-center gap-2.5 text-fg-muted" style={delay(0)}>
-            <span className="inline-block size-1.5 rounded-full bg-accent" />
+          <p className="enter label text-fg-muted" style={delay(0)}>
             {profile.role}
           </p>
 
@@ -30,12 +29,13 @@ export function Hero() {
             {profile.tagline}
           </p>
 
-          <p
-            className="enter mt-4 max-w-xl text-base leading-relaxed text-fg-muted"
-            style={delay(0.22)}
-          >
-            {profile.intro}
-          </p>
+          <div className="enter mt-5 max-w-xl space-y-1.5" style={delay(0.22)}>
+            {profile.intro.map((line) => (
+              <p key={line} className="text-base leading-relaxed text-fg-muted">
+                {line}
+              </p>
+            ))}
+          </div>
 
           {/* 메타. 표처럼 보이도록 헤어라인으로만 나눈다. */}
           <dl className="enter mt-10 max-w-xl border-t border-line" style={delay(0.3)}>

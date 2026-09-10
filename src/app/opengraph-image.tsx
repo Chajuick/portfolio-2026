@@ -15,7 +15,6 @@ export const alt = `${profile.name} — ${profile.role}`;
 const ink = "#0c0c0b";
 const paper = "#f3f1ea";
 const muted = "#969186";
-const accent = "#ff5f2e";
 
 export default function OpengraphImage() {
   return new ImageResponse(
@@ -32,9 +31,8 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div style={{ width: 10, height: 10, borderRadius: 5, background: accent }} />
-          <div style={{ color: muted, fontSize: 24, letterSpacing: 6 }}>FRONTEND ENGINEER</div>
+        <div style={{ display: "flex", color: muted, fontSize: 24, letterSpacing: 6 }}>
+          FRONTEND ENGINEER
         </div>
 
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
@@ -47,7 +45,7 @@ export default function OpengraphImage() {
             </div>
           </div>
 
-          {/* 사이트의 모니터 마스코트. 눈 둘과 커서 하나. */}
+          {/* 사이트의 모니터 마스코트. 화면 안에는 눈 둘뿐이다. */}
           <div
             style={{
               display: "flex",
@@ -59,21 +57,10 @@ export default function OpengraphImage() {
               alignItems: "center",
               justifyContent: "center",
               gap: 34,
-              position: "relative",
             }}
           >
             <div style={{ width: 22, height: 58, borderRadius: 11, background: paper }} />
             <div style={{ width: 22, height: 58, borderRadius: 11, background: paper }} />
-            <div
-              style={{
-                position: "absolute",
-                bottom: 26,
-                width: 26,
-                height: 6,
-                borderRadius: 3,
-                background: accent,
-              }}
-            />
           </div>
         </div>
 
