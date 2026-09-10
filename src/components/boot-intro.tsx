@@ -33,6 +33,8 @@ export function BootIntro() {
   const [visibleLines, setVisibleLines] = useState(0);
   const [typed, setTyped] = useState("");
   const [greeted, setGreeted] = useState("");
+  /* 마지막에 화면이 접힐 때 얼굴이 그대로 남아야 한다. phase만 보면 부팅 화면이 되돌아온다. */
+  const [faceOn, setFaceOn] = useState(false);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const clearTimers = useCallback(() => {
@@ -71,37 +73,51 @@ export function BootIntro() {
   const start = useCallback(() => {
     clearTimers();
 
+    /*
+      각 구간이 앞 동작을 끝까지 보고 넘어가게 잡았다.
+      화면 켜짐 780ms, 접힘 560ms — 애니메이션이 도는 중에 다음 단계로 넘기면
+      단계가 끊겨 보이고, 무슨 일이 일어났는지 눈에 남지 않는다.
+    */
     after(0, () => {
       setVisibleLines(0);
       setTyped("");
       setGreeted("");
+      setFaceOn(false);
       setPhase("power");
     });
-    after(500, () => {
+
+    after(700, () => {
       setPhase("boot");
       setVisibleLines(1);
     });
-    after(740, () => setVisibleLines(2));
-    after(1000, () => setPhase("typing"));
+    after(1100, () => setVisibleLines(2));
+    after(1550, () => setPhase("typing"));
 
+    const typeAt = 1650;
     COMMAND.split("").forEach((_, i) => {
-      after(1040 + i * 70, () => setTyped(COMMAND.slice(0, i + 1)));
+      after(typeAt + i * 95, () => setTyped(COMMAND.slice(0, i + 1)));
     });
 
-    // 화면이 한 번 접혔다가, 얼굴로 다시 켜진다.
-    const introDone = 1040 + COMMAND.length * 70;
-    after(introDone + 260, () => setPhase("fold"));
-    after(introDone + 660, () => setPhase("face"));
+    // 다 치고 한 박자 쉰 뒤, 화면이 접혔다가 얼굴로 다시 켜진다.
+    const introDone = typeAt + COMMAND.length * 95;
+    after(introDone + 340, () => setPhase("fold"));
 
-    const faceAt = introDone + 660;
-    after(faceAt + 1150, () => setPhase("hello"));
+    const faceAt = introDone + 340 + 560;
+    after(faceAt, () => {
+      setFaceOn(true);
+      setPhase("face");
+    });
+
+    // 눈이 다 돌아본 뒤에 인사한다.
+    const helloAt = faceAt + 1700;
+    after(helloAt, () => setPhase("hello"));
     GREETING.split("").forEach((_, i) => {
-      after(faceAt + 1190 + i * 70, () => setGreeted(GREETING.slice(0, i + 1)));
+      after(helloAt + 120 + i * 95, () => setGreeted(GREETING.slice(0, i + 1)));
     });
 
-    const helloDone = faceAt + 1190 + GREETING.length * 70;
-    after(helloDone + 320, () => setPhase("out"));
-    after(helloDone + 720, finish);
+    const helloDone = helloAt + 120 + GREETING.length * 95;
+    after(helloDone + 420, () => setPhase("out"));
+    after(helloDone + 420 + 560, finish);
   }, [after, clearTimers, finish]);
 
   // 첫 방문에서 한 번. 그 밖에는 곧바로 본문 연출을 풀어준다.
@@ -141,7 +157,7 @@ export function BootIntro() {
 
   if (phase === "hidden") return null;
 
-  const isFace = phase === "face" || phase === "hello";
+  const isFace = faceOn;
 
   return (
     <div aria-hidden onClick={skip} className="terminal fixed inset-0 z-[100] cursor-pointer bg-bg">
@@ -160,10 +176,10 @@ export function BootIntro() {
 
             <p className="h-6 font-mono text-sm text-fg">
               {phase === "hello" && (
-                <>
+                <span className="boot-fade inline-block">
                   <span className="text-accent">chajuick:~$</span> {greeted}
                   <span className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent" />
-                </>
+                </span>
               )}
             </p>
           </div>
@@ -172,13 +188,13 @@ export function BootIntro() {
             {phase !== "power" && (
               <>
                 {BOOT_LINES.slice(0, visibleLines).map((line) => (
-                  <p key={line} className="text-fg-muted">
+                  <p key={line} className="boot-fade text-fg-muted">
                     {line}
                   </p>
                 ))}
 
                 {phase === "typing" && (
-                  <p className="mt-6 text-fg">
+                  <p className="boot-fade mt-6 text-fg">
                     <span className="text-accent">chajuick:~$</span> {typed}
                     <span className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent" />
                   </p>

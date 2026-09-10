@@ -39,7 +39,7 @@ export function ProjectCard({ project, index }: { project: Project; index?: numb
             <ProjectMark
               slug={project.slug}
               index={index ?? 0}
-              className="absolute inset-0 m-auto size-1/2"
+              className="absolute inset-0 m-auto h-1/2 w-auto"
             />
           </>
         )}

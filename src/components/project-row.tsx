@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Lock } from "lucide-react";
+import { ProjectMark } from "@/components/project-mark";
 import type { Project } from "@/lib/data";
 
 /**
@@ -38,8 +39,16 @@ export function ProjectRow({ project, index }: { project: Project; index: number
         )}
       </div>
 
-      {cover && (
-        <div className="relative mt-7 aspect-16/10 overflow-hidden rounded-xl border border-line bg-bg-raised">
+      {/*
+        화면이 있으면 16:10로 크게, 없으면 낮은 띠에 구조 도형을 둔다.
+        빈 판을 화면과 같은 크기로 두면 구멍처럼 보인다.
+      */}
+      <div
+        className={`relative mt-7 grid place-items-center overflow-hidden rounded-xl border border-line bg-bg-raised ${
+          cover ? "aspect-16/10" : "aspect-14/5"
+        }`}
+      >
+        {cover ? (
           <Image
             src={cover.src}
             alt={cover.alt}
@@ -47,8 +56,21 @@ export function ProjectRow({ project, index }: { project: Project; index: number
             sizes="(min-width: 1024px) 720px, 100vw"
             className="object-cover object-top transition-transform duration-700 group-hover:scale-[1.02]"
           />
-        </div>
-      )}
+        ) : (
+          <>
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(120%_100%_at_80%_10%,var(--accent-soft),transparent_65%)]"
+            />
+            {/* 화면 대신 구조를 보여준다. 강조된 부분이 실제로 문제였던 지점이다. */}
+            <ProjectMark
+              slug={project.slug}
+              index={index}
+              className="relative h-3/5 w-auto transition-transform duration-700 group-hover:scale-105"
+            />
+          </>
+        )}
+      </div>
 
       <p className="mt-7 text-sm leading-relaxed text-fg-muted">{project.summary}</p>
 

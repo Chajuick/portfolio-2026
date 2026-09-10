@@ -126,6 +126,108 @@ function LayerMark() {
   );
 }
 
+/** 사람이 승인한 문서만 관문을 지나 답변의 근거가 된다. */
+function GateMark() {
+  const docs = [14, 41, 68];
+
+  return (
+    <>
+      {docs.map((y, i) => {
+        const on = i === 1;
+        return (
+          <rect
+            key={y}
+            x="6"
+            y={y}
+            width="28"
+            height="18"
+            rx="4"
+            fill={on ? "var(--accent-soft)" : "var(--bg-sunken)"}
+            stroke={on ? "var(--accent)" : "var(--line-strong)"}
+            strokeWidth={SHARED.strokeWidth}
+          />
+        );
+      })}
+
+      {/* 관문. 승인되지 않은 것은 여기서 멈춘다. */}
+      <path
+        d="M52 8V92"
+        stroke="var(--line-strong)"
+        strokeWidth={SHARED.strokeWidth}
+        strokeDasharray="6 6"
+        strokeLinecap={SHARED.strokeLinecap}
+      />
+
+      <path
+        d="M34 50H74"
+        stroke="var(--accent)"
+        strokeWidth={SHARED.strokeWidth}
+        strokeLinecap={SHARED.strokeLinecap}
+        className="transition-transform duration-500 group-hover:translate-x-1"
+      />
+      <circle
+        cx="84"
+        cy="50"
+        r="9"
+        fill="var(--accent-soft)"
+        stroke="var(--accent)"
+        strokeWidth={SHARED.strokeWidth}
+      />
+    </>
+  );
+}
+
+/** 말한 것을 AI가 항목으로 나눠 적는다. */
+function VoiceMark() {
+  const bars = [
+    [10, 16],
+    [18, 30],
+    [26, 44],
+    [34, 26],
+    [42, 12],
+  ];
+  const rows = [30, 46, 62];
+
+  return (
+    <>
+      {bars.map(([x, h]) => (
+        <path
+          key={x}
+          d={`M${x} ${50 - h / 2}V${50 + h / 2}`}
+          stroke="var(--line-strong)"
+          strokeWidth={SHARED.strokeWidth}
+          strokeLinecap={SHARED.strokeLinecap}
+        />
+      ))}
+
+      <path
+        d="M54 50H64"
+        stroke="var(--accent)"
+        strokeWidth={SHARED.strokeWidth}
+        strokeLinecap={SHARED.strokeLinecap}
+        className="transition-transform duration-500 group-hover:translate-x-1"
+      />
+
+      {rows.map((y, i) => {
+        const on = i === 0;
+        return (
+          <rect
+            key={y}
+            x="70"
+            y={y}
+            width="24"
+            height="9"
+            rx="3"
+            fill={on ? "var(--accent-soft)" : "var(--bg-sunken)"}
+            stroke={on ? "var(--accent)" : "var(--line-strong)"}
+            strokeWidth={SHARED.strokeWidth}
+          />
+        );
+      })}
+    </>
+  );
+}
+
 /** 도형이 없는 항목은 번호만 크게 세운다. */
 function IndexMark({ index }: { index: number }) {
   return (
@@ -147,6 +249,8 @@ const MARKS: Record<string, () => React.ReactElement> = {
   donidora: IsolationMark,
   "focuswin-mes": BranchMark,
   "doc-saas": LayerMark,
+  "ai-operator": GateMark,
+  bizai: VoiceMark,
 };
 
 export function ProjectMark({

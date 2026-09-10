@@ -27,7 +27,7 @@ export const sectionCopy = {
   work: {
     label: "Work",
     title: "상용 제품",
-    lead: "고객사 네 곳의 시스템과 사내 회계 제품에서 운영 중입니다. 고객사 정보는 빼고 문제와 판단만 남겼습니다.",
+    lead: "고객사 네 곳의 시스템과 사내 제품에서 운영 중입니다. 고객사 정보는 빼고 문제와 판단만 남겼습니다.",
   },
   lab: {
     label: "Lab",
@@ -196,7 +196,7 @@ export const projects: Project[] = [
     title: "올타마",
     subtitle: "무할루시네이션 사내 문서 RAG",
     year: "2026",
-    kind: "lab",
+    kind: "work",
     featured: true,
     role: "기획 · 설계 · 개발 전부",
     summary:
@@ -272,7 +272,7 @@ export const projects: Project[] = [
     title: "Sales Manager",
     subtitle: "음성 영업일지 AI CRM",
     year: "2026",
-    kind: "lab",
+    kind: "work",
     featured: true,
     role: "기획 · 설계 · 개발 전부",
     summary:
@@ -535,32 +535,19 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "gatcha-crane",
-    title: "인형뽑기",
-    subtitle: "three.js 물리 실험",
-    year: "2026",
-    kind: "lab",
-    role: "기획 · 설계 · 개발 전부",
-    summary: "웹에서 인형뽑기 기계를 굴려보는 3D 실험. 집게가 미끄러지는 그 느낌을 재현하는 게 재미의 전부입니다.",
-    stack: ["React", "TypeScript", "three.js", "Vite"],
-  },
-  {
-    slug: "chrome-extensions",
-    title: "크롬 확장 모음",
-    subtitle: "빌드 도구 없이 만든 MV3 확장들",
-    year: "2026",
-    kind: "lab",
-    role: "기획 · 설계 · 개발 전부",
-    summary:
-      "직접 쓰려고, 그리고 주변 사람 깔아주려고 만든 확장 모음. 폴더 하나가 확장 하나이고, 번들러 없이 순수 HTML·CSS·JS와 Manifest V3로만 만듭니다.",
-    stack: ["Manifest V3", "Vanilla JS", "빌드리스"],
-    links: [{ label: "GitHub", href: "https://github.com/Chajuick/chrome-extensions" }],
-  },
 ];
 
 export const featured = projects.filter((p) => p.featured);
-export const workProjects = projects.filter((p) => p.kind === "work");
+/** 실무 노출 순서. 화면이 있는 것을 앞에 세운다. */
+const workOrder = ["donidora", "focuswin-mes", "ai-operator", "bizai", "doc-saas"];
+
+const byOrder = (order: string[]) => (a: { slug: string }, b: { slug: string }) => {
+  const ai = order.indexOf(a.slug);
+  const bi = order.indexOf(b.slug);
+  return (ai === -1 ? order.length : ai) - (bi === -1 ? order.length : bi);
+};
+
+export const workProjects = projects.filter((p) => p.kind === "work").sort(byOrder(workOrder));
 
 /**
  * 개인 프로젝트 노출 순서.
@@ -568,8 +555,6 @@ export const workProjects = projects.filter((p) => p.kind === "work");
  * 여기 적힌 순서대로 세우고, 빠진 것은 뒤에 원래 순서로 붙는다.
  */
 const labOrder = [
-  "ai-operator",
-  "bizai",
   "retention-lab",
   "golabon",
   "geurimgyeol",
@@ -579,17 +564,9 @@ const labOrder = [
   "durinuri",
   "yeonkku",
   "reserve-completed",
-  "gatcha-crane",
-  "chrome-extensions",
 ];
 
-export const labProjects = projects
-  .filter((p) => p.kind === "lab")
-  .sort((a, b) => {
-    const ai = labOrder.indexOf(a.slug);
-    const bi = labOrder.indexOf(b.slug);
-    return (ai === -1 ? labOrder.length : ai) - (bi === -1 ? labOrder.length : bi);
-  });
+export const labProjects = projects.filter((p) => p.kind === "lab").sort(byOrder(labOrder));
 
 export const skills = [
   { group: "핵심", items: ["React", "TypeScript", "Next.js", "Tailwind CSS"] },
