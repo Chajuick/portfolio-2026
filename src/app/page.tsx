@@ -9,7 +9,6 @@ import { ProjectCard } from "@/components/project-card";
 import {
   workProjects,
   labProjects,
-  craftProjects,
   profile,
   sectionCopy,
   skills,
@@ -44,16 +43,6 @@ export default function Home() {
               {labProjects.map((p, i) => (
                 <Reveal key={p.slug} delay={(i % 2) * 0.06}>
                   <ProjectCard project={p} index={i} />
-                </Reveal>
-              ))}
-            </div>
-          </Section>
-
-          <Section id="craft" {...sectionCopy.craft}>
-            <div className="grid gap-x-10 gap-y-10 sm:grid-cols-2">
-              {craftProjects.map((p, i) => (
-                <Reveal key={p.slug} delay={(i % 2) * 0.06}>
-                  <ProjectCard project={p} index={i} compact />
                 </Reveal>
               ))}
             </div>

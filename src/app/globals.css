@@ -114,6 +114,41 @@ body {
   overflow-wrap: break-word;
 }
 
+/*
+ * 스크롤바도 화면의 일부다.
+ * 기본 스크롤바는 이 팔레트와 따로 놀아서, 다크에서 특히 눈에 걸린다.
+ * 토큰을 그대로 쓰므로 테마와 반전 면에서 알아서 따라온다.
+ */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--fg) 26%, transparent) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--fg) 22%, transparent);
+  background-clip: content-box;
+  border: 3px solid transparent;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--fg) 42%, transparent);
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
 ::selection {
   background: var(--accent);
   color: var(--accent-fg);

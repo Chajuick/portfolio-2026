@@ -1,5 +1,5 @@
 import { Showreel } from "@/components/showreel";
-import { profile, projects, workProjects, labProjects, craftProjects } from "@/lib/data";
+import { profile, projects, workProjects, labProjects } from "@/lib/data";
 
 /** 강조할 한 마디만 색을 바꿔 끼운다. 한 화면에 강조는 하나면 충분하다. */
 function Tagline() {
@@ -17,7 +17,7 @@ function Tagline() {
 const counts = [
   { label: "실무 제품", value: String(workProjects.length) },
   { label: "고객사 시스템", value: "4곳" },
-  { label: "개인 프로젝트", value: String(labProjects.length + craftProjects.length) },
+  { label: "개인 프로젝트", value: String(labProjects.length) },
   { label: "공개 저장소·사이트", value: String(projects.filter((p) => p.links?.length).length) },
 ];
 

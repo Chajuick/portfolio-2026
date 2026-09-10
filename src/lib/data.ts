@@ -15,9 +15,9 @@ export const profile = {
     { label: "주로 사용하는 기술", value: "React · TypeScript · Next.js" },
   ],
   bio: [
-    "B2B 제조·회계·문서관리 SaaS의 프론트엔드를 맡고 있습니다. 네 곳의 고객사 시스템과 한 곳의 회계 제품이 제가 짠 화면 위에서 돌아갑니다.",
+    "화면 한 장이 누군가의 하루 업무 시간을 좌우하는 자리에서 일합니다. 그래서 예쁜 것보다 헷갈리지 않는 것을 먼저 봅니다.",
     "실수를 규칙으로 막지 않으려고 합니다. 규칙은 사람이 기억해야 하지만 검사는 도구가 기억합니다. 멀티테넌트 격리도, 다크 모드 색도, 인쇄 화면도 같은 방식으로 처리했습니다.",
-    "퇴근하고는 직접 쓰려고 만듭니다. 아래 개인 프로젝트 대부분은 제가 지금도 쓰고 있는 것들입니다.",
+    "혼자 만들기 때문에 기획과 설계와 구현이 분리되지 않습니다. 화면을 그리다 스키마를 고치고, 스키마를 고치다 화면을 다시 그립니다. 이 포트폴리오도 그렇게 만들었습니다.",
   ],
   github: "https://github.com/Chajuick",
 } as const;
@@ -26,18 +26,13 @@ export const profile = {
 export const sectionCopy = {
   work: {
     label: "Work",
-    title: "맡아서 만든 제품",
-    lead: "고객사 정보는 빼고, 무엇이 문제였고 어떻게 풀었는지만 남겼습니다.",
+    title: "상용 제품",
+    lead: "고객사 네 곳의 시스템과 사내 회계 제품에서 운영 중입니다. 고객사 정보는 빼고 문제와 판단만 남겼습니다.",
   },
   lab: {
     label: "Lab",
-    title: "직접 쓰려고 만든 것",
-    lead: "필요해서 만들었고, 만들었으니 계속 씁니다. 기능보다 '왜 아무도 이렇게 안 만들었지'에서 출발한 것이 많습니다.",
-  },
-  craft: {
-    label: "Craft",
-    title: "기술을 시험한 것",
-    lead: "쓸모를 따지지 않고, 구현이 궁금해서 끝까지 가본 기록입니다.",
+    title: "개인 프로젝트",
+    lead: "기획부터 설계·개발·배포까지 혼자 맡은 것들입니다. 대부분 지금도 직접 쓰고 있습니다.",
   },
   about: {
     label: "About",
@@ -64,7 +59,7 @@ export type Project = {
   title: string;
   subtitle: string;
   year: string;
-  kind: "work" | "lab" | "craft";
+  kind: "work" | "lab";
   featured?: boolean;
   role: string;
   summary: string;
@@ -522,7 +517,7 @@ export const projects: Project[] = [
     title: "띠북",
     subtitle: "레트로 도감 UI 실험",
     year: "2026",
-    kind: "craft",
+    kind: "lab",
     role: "기획 · 설계 · 개발 전부",
     summary:
       "관동 1~100번 띠부띠부씰 컬렉션 트래커. 빨간 포켓몬 도감을 화면으로 옮기는 게 목표였습니다. 보유·중복을 체크하고 이미지로 내보내 자랑할 수 있습니다.",
@@ -545,7 +540,7 @@ export const projects: Project[] = [
     title: "인형뽑기",
     subtitle: "three.js 물리 실험",
     year: "2026",
-    kind: "craft",
+    kind: "lab",
     role: "기획 · 설계 · 개발 전부",
     summary: "웹에서 인형뽑기 기계를 굴려보는 3D 실험. 집게가 미끄러지는 그 느낌을 재현하는 게 재미의 전부입니다.",
     stack: ["React", "TypeScript", "three.js", "Vite"],
@@ -555,7 +550,7 @@ export const projects: Project[] = [
     title: "크롬 확장 모음",
     subtitle: "빌드 도구 없이 만든 MV3 확장들",
     year: "2026",
-    kind: "craft",
+    kind: "lab",
     role: "기획 · 설계 · 개발 전부",
     summary:
       "직접 쓰려고, 그리고 주변 사람 깔아주려고 만든 확장 모음. 폴더 하나가 확장 하나이고, 번들러 없이 순수 HTML·CSS·JS와 Manifest V3로만 만듭니다.",
@@ -566,8 +561,35 @@ export const projects: Project[] = [
 
 export const featured = projects.filter((p) => p.featured);
 export const workProjects = projects.filter((p) => p.kind === "work");
-export const labProjects = projects.filter((p) => p.kind === "lab");
-export const craftProjects = projects.filter((p) => p.kind === "craft");
+
+/**
+ * 개인 프로젝트 노출 순서.
+ * 배열을 물리적으로 옮기면 다음에 순서를 바꿀 때마다 큰 덩어리를 옮겨야 한다.
+ * 여기 적힌 순서대로 세우고, 빠진 것은 뒤에 원래 순서로 붙는다.
+ */
+const labOrder = [
+  "ai-operator",
+  "bizai",
+  "retention-lab",
+  "golabon",
+  "geurimgyeol",
+  "mindfulness",
+  "jeok-balim",
+  "ttibook",
+  "durinuri",
+  "yeonkku",
+  "reserve-completed",
+  "gatcha-crane",
+  "chrome-extensions",
+];
+
+export const labProjects = projects
+  .filter((p) => p.kind === "lab")
+  .sort((a, b) => {
+    const ai = labOrder.indexOf(a.slug);
+    const bi = labOrder.indexOf(b.slug);
+    return (ai === -1 ? labOrder.length : ai) - (bi === -1 ? labOrder.length : bi);
+  });
 
 export const skills = [
   { group: "핵심", items: ["React", "TypeScript", "Next.js", "Tailwind CSS"] },

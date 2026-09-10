@@ -6,18 +6,9 @@ import type { Project } from "@/lib/data";
 
 /**
  * 개인 프로젝트 항목.
- * 화면이 있으면 화면을 먼저 보여주고, 없으면 헤어라인 한 줄로만 시작한다.
- * compact는 실험 목록용 — 요약을 접고 제목만 세운다.
+ * 화면이 있으면 화면을, 없으면 같은 크기의 표지를 둔다.
  */
-export function ProjectCard({
-  project,
-  index,
-  compact = false,
-}: {
-  project: Project;
-  index?: number;
-  compact?: boolean;
-}) {
+export function ProjectCard({ project, index }: { project: Project; index?: number }) {
   const detail = Boolean(project.problem || project.decisions?.length);
   const Wrapper = detail ? Link : "div";
   const cover = project.shots?.[0];
@@ -28,7 +19,7 @@ export function ProjectCard({
       className="group flex h-full flex-col"
     >
       {/* 화면이 있든 없든 같은 크기의 판을 둔다. 하나만 비면 그리드가 어긋난다. */}
-      <div className="relative aspect-16/10 overflow-hidden rounded-lg border border-line bg-bg-sunken transition-colors duration-500 group-hover:border-line-strong">
+      <div className="relative aspect-16/10 overflow-hidden rounded-lg border border-line bg-bg-raised transition-colors duration-500 group-hover:border-line-strong">
         {cover ? (
           <Image
             src={cover.src}
@@ -40,11 +31,17 @@ export function ProjectCard({
             }`}
           />
         ) : (
-          <ProjectMark
-            slug={project.slug}
-            index={index ?? 0}
-            className="absolute inset-0 m-auto size-1/2 opacity-70"
-          />
+          <>
+            <span
+              aria-hidden
+              className="absolute inset-0 bg-[radial-gradient(120%_100%_at_80%_10%,var(--accent-soft),transparent_65%)]"
+            />
+            <ProjectMark
+              slug={project.slug}
+              index={index ?? 0}
+              className="absolute inset-0 m-auto size-1/2"
+            />
+          </>
         )}
       </div>
 
@@ -66,13 +63,9 @@ export function ProjectCard({
         </h3>
         <p className="mt-1.5 text-sm font-medium text-accent">{project.subtitle}</p>
 
-        {!compact && (
-          <p className="mt-3.5 text-sm leading-relaxed text-fg-muted">{project.summary}</p>
-        )}
+        <p className="mt-3.5 text-sm leading-relaxed text-fg-muted">{project.summary}</p>
 
-        <p className="mt-4 text-[11px] text-fg-faint">
-          {project.stack.slice(0, compact ? 2 : 3).join(" · ")}
-        </p>
+        <p className="mt-4 text-[11px] text-fg-faint">{project.stack.slice(0, 3).join(" · ")}</p>
       </div>
     </Wrapper>
   );
