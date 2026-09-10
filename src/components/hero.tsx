@@ -19,7 +19,7 @@ export function Hero() {
 
           <h1 className="enter display mt-7 text-[clamp(3.25rem,11vw,7rem)]" style={delay(0.08)}>
             {profile.name}
-            <span className="mt-1 block text-fg-faint">{profile.handle}</span>
+            <span className="display-en mt-2 block text-fg-faint">{profile.handle}</span>
           </h1>
 
           <p

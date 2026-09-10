@@ -109,8 +109,24 @@ body {
 /* ──────────────────────────────────────────────────────────────
    타이포 유틸
    ────────────────────────────────────────────────────────────── */
+/**
+ * 큰 제목.
+ * display는 한글이 섞여도 되는 기본형, display-en은 라틴 전용이다.
+ *
+ * 한글을 900으로 키우면 ㅊ·ㅇ·ㅎ의 속공간이 메워져 글자가 덩어리가 된다.
+ * 음수 자간도 라틴 습관이다 — 한글 네모틀은 여백이 이미 설계돼 있어서 깎으면 뭉친다.
+ * 그래서 기본형은 700에 자간을 거의 주지 않는다.
+ */
 @utility display {
   font-family: var(--font-display), var(--font-sans-kr), sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+@utility display-en {
+  font-family: var(--font-display), sans-serif;
   font-weight: 800;
   letter-spacing: -0.04em;
   line-height: 0.92;

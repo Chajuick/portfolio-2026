@@ -6,7 +6,7 @@ export function SiteFooter() {
     <footer className="border-t border-line">
       <div className="mx-auto flex max-w-6xl flex-col gap-5 px-6 py-12 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <p className="display text-2xl text-fg">{profile.handle}</p>
+          <p className="display-en text-2xl text-fg">{profile.handle}</p>
           <p className="label mt-3 text-fg-faint">© {new Date().getFullYear()} {profile.name}</p>
         </div>
 

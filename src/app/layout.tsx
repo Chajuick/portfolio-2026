@@ -15,7 +15,7 @@ const sansKr = Noto_Sans_KR({
 const display = Archivo({
   variable: "--font-display",
   subsets: ["latin"],
-  weight: ["800", "900"],
+  weight: ["700", "800"],
   display: "swap",
 });
 
