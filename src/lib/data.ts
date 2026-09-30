@@ -5,34 +5,35 @@ export const profile = {
   tagline: "일상과 업무에 녹아드는 화면을 만듭니다.",
   /** tagline 안에서 색을 입힐 한 마디. 한 화면에 강조는 하나면 충분하다. */
   taglineAccent: "녹아드는",
-  intro: [
-    "매일 곁에 두고 싶은 프로그램을 만듭니다.",
-    "편안하게 사용할 수 있고, 필요할 때 도움이 되는 소프트웨어를 지향합니다.",
-  ],
-  meta: [
-    { label: "하는 일", value: "사용자와 가장 가까운 화면을 만듭니다" },
-    { label: "익숙한 업무", value: "제조 · 회계 · 문서관리" },
-    { label: "주로 사용하는 기술", value: "React · TypeScript · Next.js" },
-  ],
-  bio: [
-    "화면 한 장이 누군가의 하루 업무 시간을 좌우하는 자리에서 일합니다. 그래서 예쁜 것보다 헷갈리지 않는 것을 먼저 봅니다.",
-    "실수를 규칙으로 막지 않으려고 합니다. 규칙은 사람이 기억해야 하지만 검사는 도구가 기억합니다. 멀티테넌트 격리도, 다크 모드 색도, 인쇄 화면도 같은 방식으로 처리했습니다.",
-    "혼자 만들기 때문에 기획과 설계와 구현이 분리되지 않습니다. 화면을 그리다 스키마를 고치고, 스키마를 고치다 화면을 다시 그립니다. 이 포트폴리오도 그렇게 만들었습니다.",
+  /** 소개 섹션의 큰 문장. accent는 그 안에서 색을 입힐 한 마디. */
+  belief: {
+    lines: ["좋은 프로그램은 개발자의 PC가 아니라,", "사용자의 화면에서 나옵니다."],
+    accent: "사용자의 화면",
+  },
+  /** 개발 철학. 중요한 순서대로. 히어로 네 줄과 섹션 설명이 전부 여기서 나왔다. */
+  principles: [
+    {
+      title: "가장 중요한 건, 사용자",
+      body: "다년간의 파견 업무를 통해, 사무실에서 보이지 않는 불편이 현장에 있다는 걸 배웠습니다. “안 됩니다”보다 “이렇게 하면 어떨까요”를 먼저 말합니다. 사용자의 목소리에 귀 기울여, 더 나은 화면을 그려갑니다.",
+    },
+    {
+      title: "사람의 일은, 도구에게",
+      body: "좋은 프로그램은 사용자와 회사 모두에게 이익이 되어야 합니다. 사람이 바뀌어도 결과가 바뀌지 않도록, 검사 스크립트와 하네스 엔지니어링을 적극적으로 활용합니다. 사용자 화면도 같습니다. 복잡한 규칙을 기억하지 않아도, 매번 조심하지 않아도 쓸 수 있도록 만듭니다.",
+    },
+    {
+      title: "완벽보다, 최선",
+      body: "모든 숫자를 받는 완벽한 시스템은, 입력할 사람이 없는 현장에서 멈추거나 거짓된 데이터로 채워집니다. 그래서 실제 업무에 맞는 만큼만 받고, 나머지는 과감히 덜어냅니다. 성과는 완벽이 아니라 어제보다 나아간 오늘입니다.",
+    },
   ],
   github: "https://github.com/Chajuick",
 } as const;
 
 /** 섹션 머리글. 화면 문구는 컴포넌트가 아니라 여기서 고친다. */
 export const sectionCopy = {
-  work: {
-    label: "Work",
-    title: "상용 제품",
-    lead: "고객사 네 곳의 시스템과 사내 제품에서 운영 중입니다. 고객사 정보는 빼고 문제와 판단만 남겼습니다.",
-  },
-  lab: {
-    label: "Lab",
-    title: "개인 프로젝트",
-    lead: "기획부터 설계·개발·배포까지 혼자 맡은 것들입니다. 대부분 지금도 직접 쓰고 있습니다.",
+  worlds: {
+    label: "Worlds",
+    title: "작업",
+    lead: "만든 것들을 다섯 세계로 나눴습니다. 실무 제품은 고객사 정보를 빼고 문제와 판단만 남겼습니다.",
   },
   about: {
     label: "About",
@@ -75,12 +76,13 @@ export type Project = {
   shots?: Shot[];
 };
 
-export const projects: Project[] = [
+/** 만든 것 전부. 화면에 나오는 건 아래 worlds에 적힌 것뿐이다. */
+const catalog: Project[] = [
   // ─────────────────────────────── 실무 ───────────────────────────────
   {
     slug: "donidora",
     title: "도니도라",
-    subtitle: "재무·회계관리 SaaS",
+    subtitle: "중소기업을 위한 간이 장부관리",
     year: "2026 — 운영 중",
     kind: "work",
     featured: true,
@@ -127,8 +129,8 @@ export const projects: Project[] = [
   },
   {
     slug: "focuswin-mes",
-    title: "FocusWin MES",
-    subtitle: "멀티테넌트 제조실행시스템",
+    title: "WinClick 생산관리",
+    subtitle: "생산관리자를 위한 표준 공정 관리",
     year: "2025 — 2026",
     kind: "work",
     featured: true,
@@ -169,8 +171,8 @@ export const projects: Project[] = [
   },
   {
     slug: "doc-saas",
-    title: "도면관리 SaaS",
-    subtitle: "제조사 도면 형상관리",
+    title: "WinClick 도면관리",
+    subtitle: "도면 자료를 모아 회의까지 여는 웹디스크",
     year: "2025 — 2026",
     kind: "work",
     role: "프론트엔드 담당",
@@ -194,7 +196,7 @@ export const projects: Project[] = [
   {
     slug: "ai-operator",
     title: "올타마",
-    subtitle: "무할루시네이션 사내 문서 RAG",
+    subtitle: "승인된 문서로만 답하는 사내 문서 AI",
     year: "2026",
     kind: "work",
     featured: true,
@@ -226,7 +228,7 @@ export const projects: Project[] = [
   {
     slug: "retention-lab",
     title: "Retention Lab",
-    subtitle: "CRM 마케터용 SQL 훈련 시뮬레이터",
+    subtitle: "CRM 마케터를 위한 SQL 훈련장",
     year: "2026",
     kind: "lab",
     featured: true,
@@ -269,8 +271,8 @@ export const projects: Project[] = [
   },
   {
     slug: "bizai",
-    title: "Sales Manager",
-    subtitle: "음성 영업일지 AI CRM",
+    title: "BIZ AI",
+    subtitle: "말로 남기면 정리되는 영업일지 AI",
     year: "2026",
     kind: "work",
     featured: true,
@@ -294,7 +296,7 @@ export const projects: Project[] = [
   {
     slug: "golabon",
     title: "골라본",
-    subtitle: "직접 써보고 가본 것만 추천",
+    subtitle: "블로거들의 리얼 리뷰 플랫폼",
     year: "2026",
     kind: "lab",
     featured: true,
@@ -359,7 +361,7 @@ export const projects: Project[] = [
   {
     slug: "geurimgyeol",
     title: "그림결",
-    subtitle: "창작자용 세계관 설정 관리",
+    subtitle: "창작자를 위한 세계관·인물 설정집",
     year: "2026",
     kind: "lab",
     role: "기획 · 설계 · 개발 전부",
@@ -458,7 +460,7 @@ export const projects: Project[] = [
   {
     slug: "yeonkku",
     title: "연꾸",
-    subtitle: "로컬 전용 vCard 편집기",
+    subtitle: "서버 없이 정리하는 연락처 편집기",
     year: "2026",
     kind: "lab",
     role: "기획 · 설계 · 개발 전부",
@@ -490,7 +492,7 @@ export const projects: Project[] = [
   {
     slug: "reserve-completed",
     title: "예비완료",
-    subtitle: "예비군 훈련 준비 체크",
+    subtitle: "예비군 훈련 준비 체크리스트",
     year: "2026",
     kind: "lab",
     role: "기획 · 설계 · 개발 전부",
@@ -515,7 +517,7 @@ export const projects: Project[] = [
   {
     slug: "ttibook",
     title: "띠북",
-    subtitle: "레트로 도감 UI 실험",
+    subtitle: "띠부씰 수집 도감",
     year: "2026",
     kind: "lab",
     role: "기획 · 설계 · 개발 전부",
@@ -537,36 +539,80 @@ export const projects: Project[] = [
   },
 ];
 
-export const featured = projects.filter((p) => p.featured);
-/** 실무 노출 순서. 화면이 있는 것을 앞에 세운다. */
-const workOrder = ["donidora", "focuswin-mes", "ai-operator", "bizai", "doc-saas"];
+/**
+ * 작업을 나누는 세계. 홈에서는 탭으로 하나씩 들어간다.
+ * 순서와 소속은 여기서만 정한다 — 여기 없는 프로젝트는 목록·상세·사이트맵 어디에도 나오지 않는다.
+ * color는 그 세계의 고유색이다. 세계 안에서는 강조색 자리를 이 색이 대신한다.
+ * 어두운 무대와 밝은 바탕 양쪽에서 읽히는 중간 명도로 골랐다.
+ */
+export const worlds = [
+  {
+    id: "systems",
+    color: "#f26b2f",
+    name: "업무 시스템",
+    en: "Systems",
+    lore: "사람이 바뀌어도 일은 그대로 이어지도록. 현장에서 실제로 입력할 수 있는 만큼만 받고, 나머지는 시스템이 계산합니다.",
+    slugs: ["donidora", "focuswin-mes", "doc-saas"],
+  },
+  {
+    id: "ai",
+    color: "#8a7dff",
+    name: "업무 AI",
+    en: "AI",
+    lore: "기록은 AI가, 판단은 사람이. 말로 남기면 정리되고, 근거 있는 데이터로만 답합니다.",
+    slugs: ["ai-operator", "bizai"],
+  },
+  {
+    id: "utils",
+    color: "#22b87c",
+    name: "생활 도구",
+    en: "Tools",
+    lore: "조금 더 나은 일상을 위해 만든 것들. 첫 번째 사용자인 제게 맞춰, 조금씩 고쳐갑니다.",
+    slugs: ["reserve-completed", "yeonkku", "ttibook", "geurimgyeol"],
+  },
+  {
+    id: "letters",
+    color: "#d19a3a",
+    name: "기록",
+    en: "Writing",
+    lore: "마음속 이리저리 헤매던 글들을 써내려갑니다.",
+    slugs: ["jeok-balim", "mindfulness"],
+  },
+  {
+    id: "frontier",
+    color: "#2aa4e8",
+    name: "실험",
+    en: "Experiments",
+    lore: "'이거 있으면 좋겠는데?'에서 시작해, 다른 사람의 자리에 앉아 보고 만든 것들.",
+    slugs: ["retention-lab", "golabon"],
+  },
+] as const satisfies readonly {
+  id: string;
+  name: string;
+  en: string;
+  color: string;
+  lore: string;
+  slugs: readonly string[];
+}[];
 
-const byOrder = (order: string[]) => (a: { slug: string }, b: { slug: string }) => {
-  const ai = order.indexOf(a.slug);
-  const bi = order.indexOf(b.slug);
-  return (ai === -1 ? order.length : ai) - (bi === -1 ? order.length : bi);
+export type World = (typeof worlds)[number];
+
+const bySlug = (slug: string) => {
+  const p = catalog.find((c) => c.slug === slug);
+  if (!p) throw new Error(`worlds에 적힌 ${slug}가 catalog에 없다`);
+  return p;
 };
 
-export const workProjects = projects.filter((p) => p.kind === "work").sort(byOrder(workOrder));
+export const worldProjects = (world: World) => world.slugs.map(bySlug);
 
-/**
- * 개인 프로젝트 노출 순서.
- * 배열을 물리적으로 옮기면 다음에 순서를 바꿀 때마다 큰 덩어리를 옮겨야 한다.
- * 여기 적힌 순서대로 세우고, 빠진 것은 뒤에 원래 순서로 붙는다.
- */
-const labOrder = [
-  "retention-lab",
-  "golabon",
-  "geurimgyeol",
-  "mindfulness",
-  "jeok-balim",
-  "ttibook",
-  "durinuri",
-  "yeonkku",
-  "reserve-completed",
-];
+/** 이 프로젝트가 속한 세계. */
+export const worldOf = (slug: string) => worlds.find((w) => (w.slugs as readonly string[]).includes(slug))!;
 
-export const labProjects = projects.filter((p) => p.kind === "lab").sort(byOrder(labOrder));
+/** 화면에 나오는 프로젝트. 세계 순서를 따른다. */
+export const projects: Project[] = worlds.flatMap(worldProjects);
+
+export const workProjects = projects.filter((p) => p.kind === "work");
+export const labProjects = projects.filter((p) => p.kind === "lab");
 
 export const skills = [
   { group: "핵심", items: ["React", "TypeScript", "Next.js", "Tailwind CSS"] },

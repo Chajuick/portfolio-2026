@@ -42,3 +42,10 @@ next-env.d.ts
 
 # 로컬 스크린샷
 *.local.png
+
+# 브라우저 자동화 도구가 남기는 스크린샷·로그
+.playwright-mcp/
+
+# Claude Code 플러그인(bkit) 상태 파일
+docs/.bkit-memory.json
+docs/.pdca-status.json

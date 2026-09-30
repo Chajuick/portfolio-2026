@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { BOOT_SEEN_KEY } from "@/lib/site";
 
 /**
  * 들어오면 벌어지는 일.
@@ -19,22 +20,31 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 const COMMAND = "/intro";
 const GREETING = "/hello";
-const SEEN_KEY = "chajuick:boot";
 
 /** 도크가 다시 재생을 요청할 때 쓰는 신호. */
 export const REPLAY_EVENT = "chajuick:replay";
 
-const BOOT_LINES = ["chajuick 2026.9", "프로필 불러오는 중… 완료"];
+/** 마지막 줄은 한 박자 뒤에 LOADED가 붙는다. 처음부터 '완료'면 불러오는 줄로 읽히지 않는다. */
+const BOOT_LINES = ["chajuick 2026.9", "프로필 불러오는 중…"];
+const LOADED = "완료";
+
+/** 한 글자 치는 간격. 더 빠르면 붙여 넣는 것처럼 보이고, 더 느리면 기다리게 된다. */
+const KEY_MS = 80;
+
+/** 눈이 좌우를 보고 가운데로 돌아올 때까지. .eyes 애니메이션 2s의 88% 지점이다. */
+const LOOK_MS = 1750;
 
 type Phase = "hidden" | "power" | "boot" | "typing" | "fold" | "face" | "hello" | "reveal";
 
 export function BootIntro() {
   const [phase, setPhase] = useState<Phase>("hidden");
   const [visibleLines, setVisibleLines] = useState(0);
+  const [loaded, setLoaded] = useState(false);
   const [typed, setTyped] = useState("");
   const [greeted, setGreeted] = useState("");
   /* 마지막에 화면이 접힐 때 얼굴이 그대로 남아야 한다. phase만 보면 부팅 화면이 되돌아온다. */
   const [faceOn, setFaceOn] = useState(false);
+  const [meltMs, setMeltMs] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const clearTimers = useCallback(() => {
@@ -65,7 +75,7 @@ export function BootIntro() {
     releasePage();
     timers.current.push(setTimeout(() => lockScroll(false), 1250));
     try {
-      sessionStorage.setItem(SEEN_KEY, "1");
+      sessionStorage.setItem(BOOT_SEEN_KEY, "1");
     } catch {
       // 세션 저장소를 못 쓰면 매번 보여준다. 그 편이 안 보이는 것보다 낫다.
     }
@@ -78,6 +88,7 @@ export function BootIntro() {
   const reveal = useCallback(
     (fadeMs: number) => {
       clearTimers();
+      setMeltMs(fadeMs);
       setPhase("reveal");
       releasePage();
       after(fadeMs, finish);
@@ -96,49 +107,54 @@ export function BootIntro() {
     document.documentElement.classList.remove("booted");
 
     /*
-      각 구간이 앞 동작을 끝까지 보고 넘어가게 잡았다.
-      화면 켜짐 780ms, 접힘 560ms — 애니메이션이 도는 중에 다음 단계로 넘기면
-      단계가 끊겨 보이고, 무슨 일이 일어났는지 눈에 남지 않는다.
+      박자는 앞 박자에서 얼마 뒤인지로 적는다. 한 곳을 늘려도 뒤가 따라 밀린다.
+
+      각 박자는 앞 동작이 끝나고, 그걸 한 번 볼 틈까지 지난 뒤에 온다.
+      화면 켜짐 780ms, 접힘 560ms, 두리번 LOOK_MS — 도는 중에 다음으로 넘기면
+      단계가 겹쳐 파바박 지나가고, 무슨 일이 일어났는지 눈에 남지 않는다.
     */
-    after(0, () => {
+    let t = 0;
+    const beat = (gap: number, fn: () => void) => {
+      t += gap;
+      after(t, fn);
+    };
+    // 커서가 잠깐 깜빡인 뒤(lead) 치기 시작한다. 프롬프트가 뜨자마자 글자가 붙으면 기계 같다.
+    const type = (text: string, set: (s: string) => void, lead: number) => {
+      text.split("").forEach((_, i) => beat(i === 0 ? lead : KEY_MS, () => set(text.slice(0, i + 1))));
+    };
+
+    beat(0, () => {
       setVisibleLines(0);
+      setLoaded(false);
       setTyped("");
       setGreeted("");
       setFaceOn(false);
       setPhase("power");
     });
 
-    after(700, () => {
+    beat(700, () => {
       setPhase("boot");
       setVisibleLines(1);
     });
-    after(1100, () => setVisibleLines(2));
-    after(1550, () => setPhase("typing"));
+    beat(250, () => setVisibleLines(2));
+    beat(400, () => setLoaded(true));
 
-    const typeAt = 1650;
-    COMMAND.split("").forEach((_, i) => {
-      after(typeAt + i * 95, () => setTyped(COMMAND.slice(0, i + 1)));
-    });
+    beat(250, () => setPhase("typing"));
+    type(COMMAND, setTyped, 250);
 
-    // 다 치고 한 박자 쉰 뒤, 화면이 접혔다가 얼굴로 다시 켜진다.
-    const introDone = typeAt + COMMAND.length * 95;
-    after(introDone + 340, () => setPhase("fold"));
-
-    const faceAt = introDone + 340 + 560;
-    after(faceAt, () => {
+    // 엔터를 친 한 박자 뒤, 화면이 접혔다가 얼굴로 다시 켜진다.
+    beat(350, () => setPhase("fold"));
+    beat(560, () => {
       setFaceOn(true);
       setPhase("face");
     });
 
-    // 눈이 다 돌아본 뒤에 인사한다.
-    const helloAt = faceAt + 1700;
-    after(helloAt, () => setPhase("hello"));
-    GREETING.split("").forEach((_, i) => {
-      after(helloAt + 120 + i * 95, () => setGreeted(GREETING.slice(0, i + 1)));
-    });
+    // 눈이 다 돌아보고 가운데로 돌아온 뒤에 인사한다.
+    beat(LOOK_MS, () => setPhase("hello"));
+    type(GREETING, setGreeted, 150);
 
-    const helloDone = helloAt + 120 + GREETING.length * 95;
-    after(helloDone + 420, () => reveal(780));
+    // 인사를 읽을 틈을 두고 녹인다.
+    beat(500, () => reveal(640));
   }, [after, clearTimers, lockScroll, reveal]);
 
   // 첫 방문에서 한 번. 그 밖에는 곧바로 본문 연출을 풀어준다.
@@ -147,7 +163,7 @@ export function BootIntro() {
 
     let seen = false;
     try {
-      seen = Boolean(sessionStorage.getItem(SEEN_KEY));
+      seen = Boolean(sessionStorage.getItem(BOOT_SEEN_KEY));
     } catch {
       // 세션 저장소를 못 쓰는 환경이면 그냥 보여준다.
     }
@@ -163,6 +179,11 @@ export function BootIntro() {
       lockScroll(false);
     };
   }, [clearTimers, lockScroll, releasePage, start]);
+
+  // 첫 페인트부터 화면을 가리던 막(layout의 PRE_PAINT)을, 올라온 오버레이가 이어받는다.
+  useEffect(() => {
+    if (phase !== "hidden") document.documentElement.classList.remove("boot-pending");
+  }, [phase]);
 
   // 도크에서 부르면 다시 돈다.
   useEffect(() => {
@@ -184,10 +205,16 @@ export function BootIntro() {
   const isFace = faceOn;
 
   return (
-    <div aria-hidden onClick={skip} className="terminal fixed inset-0 z-[100] cursor-pointer bg-bg">
+    <div
+      aria-hidden
+      onClick={skip}
+      /* data-reveal은 본문 스크롤 연출(reveal.tsx)이 쓰는 이름이다. 겹치면 이 화면이 통째로 투명해진다. */
+      data-melt={phase === "reveal"}
+      style={{ "--melt": `${meltMs}ms` } as React.CSSProperties}
+      className="terminal fixed inset-0 z-[100] cursor-pointer bg-bg"
+    >
       <div
         data-off={phase === "fold"}
-        data-reveal={phase === "reveal"}
         className="boot-screen scanlines relative flex h-full w-full items-center justify-center bg-bg"
       >
         <div className="boot-body flex h-full w-full items-center justify-center">
@@ -201,7 +228,7 @@ export function BootIntro() {
             </div>
 
             <p className="h-6 font-mono text-sm text-fg">
-              {phase === "hello" && (
+              {(phase === "hello" || phase === "reveal") && (
                 <span className="boot-fade inline-block">
                   <span className="text-accent">chajuick:~$</span> {greeted}
                   <span className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent" />
@@ -213,18 +240,21 @@ export function BootIntro() {
           <div className="w-full max-w-xl px-8 font-mono text-sm text-fg">
             {phase !== "power" && (
               <>
-                {BOOT_LINES.slice(0, visibleLines).map((line) => (
-                  <p key={line} className="boot-fade text-fg-muted">
+                {/* 줄 자리는 처음부터 다 잡아 둔다. 가운데 정렬이라 줄이 생길 때마다 묶음이 위로 튄다. */}
+                {BOOT_LINES.map((line, i) => (
+                  <p key={line} className={i < visibleLines ? "boot-fade text-fg-muted" : "invisible"}>
                     {line}
+                    {loaded && i === BOOT_LINES.length - 1 && (
+                      <span className="boot-fade ml-1.5 inline-block text-fg">{LOADED}</span>
+                    )}
                   </p>
                 ))}
 
-                {phase === "typing" && (
-                  <p className="boot-fade mt-6 text-fg">
-                    <span className="text-accent">chajuick:~$</span> {typed}
-                    <span className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent" />
-                  </p>
-                )}
+                {/* 접히는 동안에도 친 명령이 남아 있어야 한다. 빠지면 접히기 직전에 한 번 튄다. */}
+                <p className={phase === "typing" || phase === "fold" ? "boot-fade mt-6 text-fg" : "invisible mt-6"}>
+                  <span className="text-accent">chajuick:~$</span> {typed}
+                  <span className="caret ml-0.5 inline-block h-4 w-[7px] translate-y-0.5 bg-accent" />
+                </p>
               </>
             )}
           </div>
